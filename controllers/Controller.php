@@ -9,8 +9,21 @@ class Controller
     /** @var View**/
     protected $view;
 
-    function __construct()
+    /**
+     * @return View
+     */
+    public function getView(): View
     {
-        $this->view = new View();
+        return $this->view;
     }
+
+    /**
+     * @param View $view
+     */
+    public function setView(View $view): void
+    {
+        $this->view = $view;
+    }
+
+
 }

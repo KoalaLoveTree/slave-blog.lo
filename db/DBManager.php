@@ -2,7 +2,7 @@
 
 namespace db;
 
-class DBManager
+class DBManager implements DB
 {
     /** @var array* */
     private $db;
@@ -15,7 +15,7 @@ class DBManager
         $this->connect();
     }
 
-    private function connect()
+    public function connect()
     {
         try {
             $this->dbh = new \PDO('mysql:host=' . $this->db['server'] . ';dbname=' . $this->db['name'],
