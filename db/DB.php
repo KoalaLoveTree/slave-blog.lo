@@ -7,7 +7,7 @@ interface DB
 {
     public function connect();
     public function insert(string $tableName, array $args): int;
-    public function read(string $tableName, int $id): array;
-    public function update(string $tableName, int $id, array $args);
-    public function delete(string $tableName, int $id);
+    public function read(string $tableName, string $condition): array;
+    public function update(string $tableName, string $condition, array $args);
+    public function delete(string $tableName, string $condition);
 }

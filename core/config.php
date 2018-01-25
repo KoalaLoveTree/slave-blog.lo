@@ -2,10 +2,11 @@
 return [
     'title' => 'Slave Blog',
     'db' => [
-        'server' => '127.0.0.1',
+        'server' => 'localhost',
         'username' => 'root',
         'password' => '',
         'name' => 'slave_blog_db'
     ]
 ];
 
+//mysql_native_password

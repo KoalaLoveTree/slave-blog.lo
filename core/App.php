@@ -1,35 +1,30 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: AgyKoala
- * Date: 21.01.2018
- * Time: 5:26
- */
 
 namespace core;
 
 
 use db\DB;
+use db\MySQLDBManager;
 
 class App
 {
     /** @var DB */
-    protected static $db;
+    protected static $dbm;
 
     /**
      * @return DB
      */
-    public static function getDb()
+    public static function getDbm()
     {
-        return static::$db;
+        return static::$dbm;
     }
 
     /**
      * @param DB $db
      */
-    public static function setDb(DB $db): void
+    public static function setDbm(DB $db): void
     {
-        static::$db;
+        static::$dbm = $db;
     }
 
 

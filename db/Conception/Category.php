@@ -13,7 +13,7 @@ class Category
     private $title;
 
     /**
-     * Category constructor.
+     * category constructor.
      * @param int $id
      * @param string $title
      */
