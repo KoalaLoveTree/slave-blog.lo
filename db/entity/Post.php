@@ -11,10 +11,10 @@ class Post implements Entity
     private $id;
 
     /**@var int**/
-    private $category_id;
+    private $categoryId;
 
     /**@var int**/
-    private $author_id;
+    private $authorId;
 
     /**@var string**/
     private $title;
@@ -47,15 +47,15 @@ class Post implements Entity
      */
     public function getCategoryId(): int
     {
-        return $this->category_id;
+        return $this->categoryId;
     }
 
     /**
-     * @param int $category_id
+     * @param int $categoryId
      */
-    public function setCategoryId(int $category_id): void
+    public function setCategoryId(int $categoryId): void
     {
-        $this->category_id = $category_id;
+        $this->categoryId = $categoryId;
     }
 
     /**
@@ -63,15 +63,15 @@ class Post implements Entity
      */
     public function getAuthorId(): int
     {
-        return $this->author_id;
+        return $this->authorId;
     }
 
     /**
-     * @param int $author_id
+     * @param int $authorId
      */
-    public function setAuthorId(int $author_id): void
+    public function setAuthorId(int $authorId): void
     {
-        $this->author_id = $author_id;
+        $this->authorId = $authorId;
     }
 
     /**

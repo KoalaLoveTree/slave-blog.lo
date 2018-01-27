@@ -2,6 +2,9 @@
 
 namespace db;
 
+use db\entity\Post;
+use db\entity\User;
+
 class MySQLDBManager implements DB
 {
     /** @var array* */
@@ -18,22 +21,43 @@ class MySQLDBManager implements DB
     public function connect()
     {
         try {
-            $this->dbh = new \PDO('mysql:host=' . $this->db['server'] . ';dbname=' . $this->db['name'],$this->db['username']);
+            $this->dbh = new \PDO('mysql:host=' . $this->db['server'] . ';dbname=' . $this->db['name'], $this->db['username']);
         } catch (\PDOException $e) {
             die('Error!: ' . $e->getMessage() . '<br/>');
         }
     }
 
-    public function insert(string $tableName, array $args): int
+    public function insert(string $tableName, array $args): bool
     {
-
+        if ($tableName == User::TABLE_NAME) {
+            $stmu = $this->dbh->prepare('INSERT INTO user (login, password, email) VALUES '
+                . '(:login, :password, :email)');
+            $stmu->bindParam(':login', $args['login']);
+            $stmu->bindParam(':password', $args['password']);
+            $stmu->bindParam(':email', $args['email']);
+            return $stmu->execute();
+        }
     }
 
-    public function read(string $tableName, string $condition): array
+    public function read(string $tableName, string $target): ?array
     {
-        $stm = $this->dbh->query('SELECT * FROM ' . $tableName .' '. $condition);
-        return $result = $stm->fetchAll(\PDO::FETCH_ASSOC);
+        if ($tableName == User::TABLE_NAME && $target == 'authorization') {
+            $stmu = $this->dbh->prepare('SELECT * FROM user WHERE email = ?');
+            $stmu->execute(array($_POST['email']));
+            if ($stmu != null) {
+                return $result = $stmu->fetchAll(\PDO::FETCH_ASSOC);
+            }
+            return null;
+        }
+    }
 
+    public function readWithoutParams(string $tableName, string $condition): ?array
+    {
+        $stm = $this->dbh->query('SELECT * FROM ' . $tableName . ' ' . $condition);
+        if ($stm != null) {
+            return $result = $stm->fetchAll(\PDO::FETCH_ASSOC);
+        }
+        return null;
     }
 
     public function update(string $tableName, string $condition, array $args)

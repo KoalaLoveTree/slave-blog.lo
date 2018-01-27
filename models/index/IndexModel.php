@@ -20,7 +20,7 @@ class IndexModel extends BaseModel
 
     private function getPostsForHome(): array
     {
-        return $this->dbManager->read(Post::TABLE_NAME, 'ORDER BY id DESC LIMIT 3');
+        return $this->dbManager->readWithoutParams(Post::TABLE_NAME, 'ORDER BY id DESC LIMIT 3');
     }
 
 }

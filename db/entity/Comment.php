@@ -11,32 +11,16 @@ class Comment implements Entity
     private $id;
 
     /**@var int**/
-    private $post_id;
+    private $postId;
 
     /**@var int**/
-    private $author_id;
+    private $authorId;
 
     /**@var string**/
     private $content;
 
     /**@var string**/
     private $pubtime;
-
-    /**
-     * Comment constructor.
-     * @param int $post_id
-     * @param int $author_id
-     * @param string $content
-     * @param string $pubtime
-     */
-    public function __construct(int $post_id, int $author_id, string $content, string $pubtime)
-    {
-        $this->post_id = $post_id;
-        $this->author_id = $author_id;
-        $this->content = $content;
-        $this->pubtime = $pubtime;
-    }
-
 
     /**
      * @return int
@@ -59,15 +43,15 @@ class Comment implements Entity
      */
     public function getPostId(): int
     {
-        return $this->post_id;
+        return $this->postId;
     }
 
     /**
-     * @param int $post_id
+     * @param int $postId
      */
-    public function setPostId(int $post_id): void
+    public function setPostId(int $postId): void
     {
-        $this->post_id = $post_id;
+        $this->postId = $postId;
     }
 
     /**
@@ -75,15 +59,15 @@ class Comment implements Entity
      */
     public function getAuthorId(): int
     {
-        return $this->author_id;
+        return $this->authorId;
     }
 
     /**
-     * @param int $author_id
+     * @param int $authorId
      */
-    public function setAuthorId(int $author_id): void
+    public function setAuthorId(int $authorId): void
     {
-        $this->author_id = $author_id;
+        $this->authorId = $authorId;
     }
 
     /**

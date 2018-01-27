@@ -22,22 +22,6 @@ class User implements Entity
     /**@var string**/
     private $role;
 
-    /**
-     * User constructor.
-     * @param int $id
-     * @param string $login
-     * @param string $password
-     * @param string $email
-     * @param string $role
-     */
-    public function __construct(string $login, string $password, string $email, string $role)
-    {
-        $this->login = $login;
-        $this->password = $password;
-        $this->email = $email;
-        $this->role = $role;
-    }
-
 
     /**
      * @return int

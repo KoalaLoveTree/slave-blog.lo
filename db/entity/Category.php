@@ -12,16 +12,6 @@ class Category implements Entity
     /** @var string **/
     private $title;
 
-    /**
-     * category constructor.
-     * @param int $id
-     * @param string $title
-     */
-    public function __construct(int $id, string $title)
-    {
-        $this->title = $title;
-    }
-
 
     /**
      * @return int
