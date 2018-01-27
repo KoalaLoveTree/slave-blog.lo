@@ -1,8 +1,8 @@
 <?php
 
-namespace db\conception;
+namespace db\entity;
 
-class User
+class User implements Entity
 {
 
     const TABLE_NAME = 'user';

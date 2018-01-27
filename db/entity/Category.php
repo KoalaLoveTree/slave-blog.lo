@@ -1,8 +1,8 @@
 <?php
 
-namespace db\conception;
+namespace db\entity;
 
-class Category
+class Category implements Entity
 {
     const TABLE_NAME = 'category';
 

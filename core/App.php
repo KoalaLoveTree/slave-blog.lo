@@ -4,7 +4,6 @@ namespace core;
 
 
 use db\DB;
-use db\MySQLDBManager;
 
 class App
 {

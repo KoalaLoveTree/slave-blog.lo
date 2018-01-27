@@ -2,26 +2,26 @@
 
 namespace models\index;
 
-use core\App;
-use db\MySQLDBManager;
+use db\entity\Post;
+use models\BaseModel;
 
-
-class IndexModel
+class IndexModel extends BaseModel
 {
-
-    const TABLE_NAME = 'post';
-
-    /** @var MySQLDBManager */
-    protected $dbManager;
 
     public function __construct()
     {
-        $this->dbManager = App::getDbm();
+        parent::__construct();
     }
 
-    public function getPostsForHome() : array
+    public function getPosts(): array
     {
-        return $this->dbManager->read(self::TABLE_NAME, 'ORDER BY id DESC LIMIT 3');
+        $post = new Post();
+        return parent::parse($this->getPostsForHome(),get_class($post));
+    }
+
+    private function getPostsForHome(): array
+    {
+        return $this->dbManager->read(Post::TABLE_NAME, 'ORDER BY id DESC LIMIT 3');
     }
 
 }

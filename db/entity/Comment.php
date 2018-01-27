@@ -1,45 +1,40 @@
 <?php
 
-namespace db\conception;
+namespace db\entity;
 
-class Post
+class Comment implements Entity
 {
 
-    const TABLE_NAME = 'post';
+    const TABLE_NAME = 'comment';
 
     /**@var int**/
     private $id;
 
     /**@var int**/
-    private $category_id;
+    private $post_id;
 
     /**@var int**/
     private $author_id;
 
     /**@var string**/
-    private $title;
-
-    /**@var string**/
     private $content;
 
     /**@var string**/
-    private $pubdate;
+    private $pubtime;
 
     /**
-     * Post constructor.
-     * @param int $category_id
+     * Comment constructor.
+     * @param int $post_id
      * @param int $author_id
-     * @param string $title
      * @param string $content
-     * @param string $pubdate
+     * @param string $pubtime
      */
-    public function __construct(int $category_id, int $author_id, string $title, string $content, string $pubdate)
+    public function __construct(int $post_id, int $author_id, string $content, string $pubtime)
     {
-        $this->category_id = $category_id;
+        $this->post_id = $post_id;
         $this->author_id = $author_id;
-        $this->title = $title;
         $this->content = $content;
-        $this->pubdate = $pubdate;
+        $this->pubtime = $pubtime;
     }
 
 
@@ -62,17 +57,17 @@ class Post
     /**
      * @return int
      */
-    public function getCategoryId(): int
+    public function getPostId(): int
     {
-        return $this->category_id;
+        return $this->post_id;
     }
 
     /**
-     * @param int $category_id
+     * @param int $post_id
      */
-    public function setCategoryId(int $category_id): void
+    public function setPostId(int $post_id): void
     {
-        $this->category_id = $category_id;
+        $this->post_id = $post_id;
     }
 
     /**
@@ -94,22 +89,6 @@ class Post
     /**
      * @return string
      */
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param string $title
-     */
-    public function setTitle(string $title): void
-    {
-        $this->title = $title;
-    }
-
-    /**
-     * @return string
-     */
     public function getContent(): string
     {
         return $this->content;
@@ -126,17 +105,17 @@ class Post
     /**
      * @return string
      */
-    public function getPubdate(): string
+    public function getPubtime(): string
     {
-        return $this->pubdate;
+        return $this->pubtime;
     }
 
     /**
-     * @param string $pubdate
+     * @param string $pubtime
      */
-    public function setPubdate(string $pubdate): void
+    public function setPubtime(string $pubtime): void
     {
-        $this->pubdate = $pubdate;
+        $this->pubtime = $pubtime;
     }
 
 

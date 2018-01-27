@@ -1,41 +1,29 @@
 <?php
 
-namespace db\conception;
+namespace db\entity;
 
-class Comment
+class Post implements Entity
 {
 
-    const TABLE_NAME = 'comment';
+    const TABLE_NAME = 'post';
 
     /**@var int**/
     private $id;
 
     /**@var int**/
-    private $post_id;
+    private $category_id;
 
     /**@var int**/
     private $author_id;
 
     /**@var string**/
+    private $title;
+
+    /**@var string**/
     private $content;
 
     /**@var string**/
-    private $pubtime;
-
-    /**
-     * Comment constructor.
-     * @param int $post_id
-     * @param int $author_id
-     * @param string $content
-     * @param string $pubtime
-     */
-    public function __construct(int $post_id, int $author_id, string $content, string $pubtime)
-    {
-        $this->post_id = $post_id;
-        $this->author_id = $author_id;
-        $this->content = $content;
-        $this->pubtime = $pubtime;
-    }
+    private $pubdate;
 
 
     /**
@@ -57,17 +45,17 @@ class Comment
     /**
      * @return int
      */
-    public function getPostId(): int
+    public function getCategoryId(): int
     {
-        return $this->post_id;
+        return $this->category_id;
     }
 
     /**
-     * @param int $post_id
+     * @param int $category_id
      */
-    public function setPostId(int $post_id): void
+    public function setCategoryId(int $category_id): void
     {
-        $this->post_id = $post_id;
+        $this->category_id = $category_id;
     }
 
     /**
@@ -89,6 +77,22 @@ class Comment
     /**
      * @return string
      */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle(string $title): void
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return string
+     */
     public function getContent(): string
     {
         return $this->content;
@@ -105,17 +109,17 @@ class Comment
     /**
      * @return string
      */
-    public function getPubtime(): string
+    public function getPubdate(): string
     {
-        return $this->pubtime;
+        return $this->pubdate;
     }
 
     /**
-     * @param string $pubtime
+     * @param string $pubdate
      */
-    public function setPubtime(string $pubtime): void
+    public function setPubdate(string $pubdate): void
     {
-        $this->pubtime = $pubtime;
+        $this->pubdate = $pubdate;
     }
 
 
