@@ -29,32 +29,37 @@ class UserAuthorizationModel extends BaseModel
 
     public function addNewUser(): ?int
     {
-        if ($this->isUserExist() != null) {
+        if ($this->isEmailExist()) {
             return null;
         } else {
             return $this->dbManager->insert(User::TABLE_NAME, ['login' => $_POST['login'],
                 'password' => $_POST['password'],
                 'email' => $_POST['email'],
-                ]);
+            ]);
         }
     }
 
-    public function checkPassword():int
+    public function checkPassword(): int
     {
-        $result = $this->isUserExist();
-        if ($result != null) {
-            $user = parent::parse($result);
-            if ($user[0]->getPassword() == $_POST['password']) {
-                return 0;
-            } else {
-                return 2;
-            }
+        if ($this->isUserExist()) {
+            return 1;
         }
-        return 1;
+        return 0;
     }
 
-    public function isUserExist(): ?array
+    private function isUserExist(): bool
     {
-        return $this->dbManager->read(User::TABLE_NAME, 'authorization');
+        if ($this->dbManager->read(User::TABLE_NAME, 'authorization',[])){
+            return true;
+        }
+        return false;
+    }
+
+    private function isEmailExist(): bool
+    {
+        if ($this->dbManager->read(User::TABLE_NAME, 'emailExist',[])) {
+            return true;
+        }
+        return false;
     }
 }

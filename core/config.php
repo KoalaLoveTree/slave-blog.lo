@@ -8,5 +8,3 @@ return [
         'name' => 'slave_blog_db'
     ]
 ];
-
-//mysql_native_password

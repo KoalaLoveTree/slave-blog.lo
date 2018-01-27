@@ -2,6 +2,7 @@
 
 namespace db;
 
+use db\entity\Category;
 use db\entity\Post;
 use db\entity\User;
 
@@ -18,7 +19,7 @@ class MySQLDBManager implements DB
         $this->connect();
     }
 
-    public function connect()
+    public function connect():void
     {
         try {
             $this->dbh = new \PDO('mysql:host=' . $this->db['server'] . ';dbname=' . $this->db['name'], $this->db['username']);
@@ -40,18 +41,58 @@ class MySQLDBManager implements DB
         return false;
     }
 
-    public function read(string $tableName, string $target): ?array
+    public function read(string $tableName, string $target, array $args): ?array
     {
         if ($tableName == User::TABLE_NAME && $target == 'authorization') {
-            $stmu = $this->dbh->prepare('SELECT * FROM user WHERE email = ?');
-            $stmu->execute(array($_POST['email']));
+            $stmu = $this->dbh->prepare('SELECT * FROM user WHERE email = ? AND password = ?');
+            $stmu->execute(array($_POST['email'], $_POST['password']));
             if ($stmu != null) {
                 return $result = $stmu->fetchAll(\PDO::FETCH_ASSOC);
             }
             return null;
         }
+        if ($tableName == User::TABLE_NAME && $target == 'emailExist') {
+            $stmu = $this->dbh->prepare('SELECT * FROM user WHERE email = ?');
+            $stmu->execute(array($_POST['email']));
+            if ($stmu != null) {
+                return ['answer' => 'email is exist'];
+            }
+            return null;
+        }
         if ($tableName == Post::TABLE_NAME && $target == 'postsForHome') {
             $stmu = $this->dbh->prepare('SELECT * FROM post ORDER BY id DESC LIMIT 3');
+            $stmu->execute();
+            if ($stmu != null) {
+                return $result = $stmu->fetchAll(\PDO::FETCH_ASSOC);
+            }
+            return null;
+        }
+        if ($tableName == Post::TABLE_NAME && $target == 'chosenPost') {
+            $stmu = $this->dbh->prepare('SELECT * FROM post WHERE id = ?');
+            $stmu->execute(array($args[0]));
+            if ($stmu != null) {
+                return $result = $stmu->fetchAll(\PDO::FETCH_ASSOC);
+            }
+            return null;
+        }
+        if ($tableName == User::TABLE_NAME && $target == 'authorNameForPost') {
+            $stmu = $this->dbh->prepare('SELECT login FROM user WHERE id = ?');
+            $stmu->execute(array($args[0]));
+            if ($stmu != null) {
+                return $result = $stmu->fetchAll(\PDO::FETCH_ASSOC);
+            }
+            return null;
+        }
+        if ($tableName == Category::TABLE_NAME && $target == 'categoryTitleForPost') {
+            $stmu = $this->dbh->prepare('SELECT title FROM category WHERE id = ?');
+            $stmu->execute(array($args[0]));
+            if ($stmu != null) {
+                return $result = $stmu->fetchAll(\PDO::FETCH_ASSOC);
+            }
+            return null;
+        }
+        if ($tableName == Category::TABLE_NAME && $target == 'getCategories') {
+            $stmu = $this->dbh->prepare('SELECT * FROM category');
             $stmu->execute();
             if ($stmu != null) {
                 return $result = $stmu->fetchAll(\PDO::FETCH_ASSOC);

@@ -20,7 +20,7 @@ class IndexModel extends BaseModel
 
     private function getPostsForHome(): array
     {
-        return $this->dbManager->read(Post::TABLE_NAME, 'postsForHome');
+        return $this->dbManager->read(Post::TABLE_NAME, 'postsForHome',[]);
     }
 
 }
