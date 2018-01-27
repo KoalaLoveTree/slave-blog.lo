@@ -10,17 +10,19 @@ abstract class BaseModel
 {
     /**@var DB */
     protected $dbManager;
+    private $entityName;
 
-    public function __construct()
+    public function __construct(string $entityName)
     {
         $this->dbManager = App::getDbm();
+        $this->entityName = $entityName;
     }
 
-    public function parse(array $param, string $entityName): array
+    public function parse(array $param): array
     {
         $result = [];
         foreach ($param as $item) {
-            $entity = new $entityName;
+            $entity = new $this->entityName;
             $result[] = $this->parseSecondary($item, $entity);
         }
         return $result;

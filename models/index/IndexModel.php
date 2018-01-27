@@ -10,13 +10,12 @@ class IndexModel extends BaseModel
 
     public function __construct()
     {
-        parent::__construct();
+        parent::__construct(Post::class);
     }
 
     public function getPosts(): array
     {
-        $post = new Post();
-        return parent::parse($this->getPostsForHome(),get_class($post));
+        return parent::parse($this->getPostsForHome());
     }
 
     private function getPostsForHome(): array
