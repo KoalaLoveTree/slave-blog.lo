@@ -37,6 +37,7 @@ class MySQLDBManager implements DB
             $stmu->bindParam(':email', $args['email']);
             return $stmu->execute();
         }
+        return false;
     }
 
     public function read(string $tableName, string $target): ?array
@@ -49,13 +50,13 @@ class MySQLDBManager implements DB
             }
             return null;
         }
-    }
-
-    public function readWithoutParams(string $tableName, string $condition): ?array
-    {
-        $stm = $this->dbh->query('SELECT * FROM ' . $tableName . ' ' . $condition);
-        if ($stm != null) {
-            return $result = $stm->fetchAll(\PDO::FETCH_ASSOC);
+        if ($tableName == Post::TABLE_NAME && $target == 'postsForHome') {
+            $stmu = $this->dbh->prepare('SELECT * FROM post ORDER BY id DESC LIMIT 3');
+            $stmu->execute();
+            if ($stmu != null) {
+                return $result = $stmu->fetchAll(\PDO::FETCH_ASSOC);
+            }
+            return null;
         }
         return null;
     }
