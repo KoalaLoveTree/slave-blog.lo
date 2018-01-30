@@ -1,5 +1,4 @@
 <?php
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -40,19 +39,32 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li ><a href="http://slave-blog.lo/user/profile">Profile</a></li>
+                    <?php if (isset($_SESSION['userId'])){?>
+                    <li><a href="http://slave-blog.lo/user/profile">Profile</a></li>
                     <li><a href="http://slave-blog.lo/wall">Wall</a></li>
+                    <?php }?>
                     <li><a href="http://slave-blog.lo/category">Category</a></li>
             </div><!-- /.navbar-collapse -->
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li><a href="http://slave-blog.lo/user/signup">Sign Up</a></li>
-                <li><a href="http://slave-blog.lo/user/signin">Sign In</a></li>
-        </div><!-- /.navbar-collapse -->
-    </div>
+    <?php if (!isset($_SESSION['userId'])) { ?>
+        <div class="col-md-4">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="http://slave-blog.lo/user/signup">Sign Up</a></li>
+                    <li><a href="http://slave-blog.lo/user/signin">Sign In</a></li>
+            </div><!-- /.navbar-collapse -->
+        </div>
+        <?php ;
+    } else { ?>
+        <div class="col-md-4">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="http://slave-blog.lo/user/exit">Exit</a></li>
+            </div><!-- /.navbar-collapse -->
+        </div>
+        <?php ;
+    } ?>
 </nav>
 
 <div class="container-fluid">

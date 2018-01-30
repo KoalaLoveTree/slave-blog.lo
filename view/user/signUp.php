@@ -6,9 +6,6 @@
         <input type="email" name="email" class="form-control" placeholder="Email address" required autofocus>
         <input type="password" name="password" class="form-control" placeholder="Password" required>
         <input name="login" class="form-control" placeholder="Login" required>
-        <label class="checkbox">
-            <input type="checkbox" value="remember-me"> Remember me
-        </label>
         <button class="btn btn-lg btn-primary btn-block" name="signUpAction" value="start" type="submit">Sign up</button>
     </form>
 

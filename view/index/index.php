@@ -1,14 +1,11 @@
 <?php
-/** @var $first string */
-/** @var $second string */
-/** @var $third string */
-/** @var $firstLink string */
-/** @var $secondLink string */
-/** @var $thirdLink string */
+/** @var $first \db\entity\Post */
+/** @var $second \db\entity\Post */
+/** @var $third \db\entity\Post */
 ?>
 
 <ul class="list-group">
-  <a href="http://slave-blog.lo/post/show/<?= $firstLink?>" class="list-group-item"><?= $first?></a>
-  <a href="http://slave-blog.lo/post/show/<?= $secondLink?>" class="list-group-item"><?= $second?></a>
-  <a href="http://slave-blog.lo/post/show/<?= $thirdLink?>" class="list-group-item"><?= $third?></a>
+  <a href="http://slave-blog.lo/post/show/<?= $first->getId()?>" class="list-group-item"><?= $first->getTitle()?></a>
+  <a href="http://slave-blog.lo/post/show/<?= $second->getId()?>" class="list-group-item"><?= $second->getTitle()?></a>
+  <a href="http://slave-blog.lo/post/show/<?= $third->getId()?>" class="list-group-item"><?= $third->getTitle()?></a>
 </ul>

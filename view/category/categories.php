@@ -1,13 +1,9 @@
 <?php
-///** @var array categories */
-//?>
-<!---->
-<!--<ul class="list-group">-->
-<!--    --><?php //foreach ($categories as $category){
-//        '<a href="http://slave-blog.lo/category/" class="list-group-item"></a>';
-//    }?>
-<!--    -->
-<!--</ul>-->
-
-
-<!-- some fucking monkey code-->
+/** @var array $categories **/
+?>
+<ul class="list-group">
+        <?php foreach ($categories as $category) : ?>
+                <a href="http://slave-blog.lo/category/allposts/<?= $category->getId() ?>"
+                   class="list-group-item"><?= $category->getTitle() ?></a>
+            <?php endforeach ?>
+</ul>

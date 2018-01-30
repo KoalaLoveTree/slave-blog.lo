@@ -1,14 +1,12 @@
 <?php
-/** @var string $category */
-/** @var string $author */
-/** @var string $title */
-/** @var string $content */
-/** @var string $pubdate */
+/** @var \db\entity\Post $post */
+/** @var \db\entity\User $author */
+/** @var \db\entity\Category $category */
 ?>
 <div class="container-fluid">
-    <?=$category?><br>
-    <?=$author?><br>
-    <?=$title?><br>
-    <?=$content?><br>
-    <?=$pubdate?><br>
+    <?=$category->getTitle()?><br>
+    <?=$author->getLogin()?><br>
+    <?=$post->getTitle()?><br>
+    <?=$post->getContent()?><br>
+    <?=$post->getPubdate()?><br>
 </div>

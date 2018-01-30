@@ -14,9 +14,12 @@ use route\StandardParser;
 
 define('ROOT', dirname(__FILE__) . '/');
 
+
 $url = $_SERVER['REQUEST_URI'];
 $conf = require 'core\config.php';
 \core\App::setDbm(new \db\MySQLDBManager($conf['db']));
+
+session_start();
 
 $router = new Router();
 echo $router->callAction(StandardParser::parse($url));

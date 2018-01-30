@@ -8,5 +8,7 @@
     }
 </style>
 <div class="text">
-    <?= $message?>
+    <?= $message?><br>
+    U've been redirect to home page 5 sec.
 </div>
+<?php header('Refresh: 5; URL=http://slave-blog.lo');?>
