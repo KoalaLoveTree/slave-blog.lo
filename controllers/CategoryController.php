@@ -11,6 +11,7 @@ class CategoryController extends Controller
     {
         $catRepo = $this->createCategoryRepository();
         $categories = $catRepo->getAllCategories();
+
         return $this->getView()->render('categories', [
             'categories' => $categories,
         ]);
@@ -26,12 +27,12 @@ class CategoryController extends Controller
         ]);
     }
 
-    protected function createPostRepository():PostRepository
+    protected function createPostRepository(): PostRepository
     {
         return new PostRepository();
     }
 
-    protected function createCategoryRepository():CategoryRepository
+    protected function createCategoryRepository(): CategoryRepository
     {
         return new CategoryRepository();
     }

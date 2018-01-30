@@ -2,42 +2,86 @@
 
 namespace models;
 
-use core\App;
-use core\DBPropertyNotFoundException;
-use db\entity\Entity;
+use core\helper\RequestHelper;
 
 abstract class BaseModel
 {
-    /**@var DB */
-    protected $dbManager;
-    private $entityName;
+    /** @var array */
+    protected $errors = [];
 
-    public function __construct(string $entityName)
+    /**
+     * @param array $data
+     *
+     * @return bool
+     */
+    public function load(array $data): bool
     {
-        $this->dbManager = App::getDbm();
-        $this->entityName = $entityName;
-    }
+        $atLeastOneLoaded = false;
 
-    public function parse(array $param): array
-    {
-        $result = [];
-        foreach ($param as $item) {
-            $entity = new $this->entityName;
-            $result[] = $this->parseSecondary($item, $entity);
-        }
-        return $result;
-    }
+        $properties = $this->getPublicProperties();
 
-    public function parseSecondary(array $data, Entity $entity):Entity
-    {
-        foreach ($data as $key => $value) {
-            $setFunc = 'set' . ucfirst($key);
-            if (!method_exists($entity, $setFunc)) {
-                throw new DBPropertyNotFoundException('Method ' . $setFunc . ' does not exist');
+        foreach ($properties as $property) {
+            if ($value = RequestHelper::getValue($data, $property)) {
+                $this->{$property} = $value;
+                $atLeastOneLoaded = true;
             }
-            call_user_func_array([$entity, $setFunc], [$value]);
         }
-        return $entity;
+
+        return $atLeastOneLoaded;
     }
 
+    /**
+     * @param $message
+     *
+     * @return void
+     */
+    protected function addError($message)
+    {
+        $this->errors[] = $message;
+    }
+
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorString(): string
+    {
+        $string = '';
+
+        foreach ($this->getErrors() as $error) {
+            $string .= $error . PHP_EOL;
+        }
+
+        return $string;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isValid(): bool
+    {
+        return $this->validate();
+    }
+
+    /**
+     * @return \ReflectionProperty[]
+     */
+    protected function getPublicProperties(): array
+    {
+        return $this->createReflectionClass()->getProperties(\ReflectionProperty::IS_PUBLIC);
+    }
+
+    /**
+     * @return \ReflectionClass
+     */
+    protected function createReflectionClass(): \ReflectionClass
+    {
+        return new \ReflectionClass($this);
+    }
+
+    abstract protected function validate(): bool;
 }

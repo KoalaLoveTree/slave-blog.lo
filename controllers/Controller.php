@@ -6,7 +6,7 @@ use view\View;
 
 class Controller
 {
-    /** @var View**/
+    /** @var View* */
     protected $view;
 
     /**
@@ -25,5 +25,11 @@ class Controller
         $this->view = $view;
     }
 
-
+    /**
+     * @return array
+     */
+    protected function getPost(): array
+    {
+        return $_POST;
+    }
 }

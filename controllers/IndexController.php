@@ -2,7 +2,6 @@
 
 namespace controllers;
 
-use models\index\IndexModel;
 use repositories\PostRepository;
 
 class IndexController extends Controller
@@ -12,6 +11,7 @@ class IndexController extends Controller
     {
         $postRepo = $this->createPostRepository();
         $data = $postRepo->getPostsForHomePage();
+
         return $this->getView()->render('index', [
             'first' => $data[0],
             'second' => $data[1],
@@ -23,7 +23,7 @@ class IndexController extends Controller
     /**
      * @return PostRepository
      */
-    protected function createPostRepository():PostRepository
+    protected function createPostRepository(): PostRepository
     {
         return new PostRepository();
     }

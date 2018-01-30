@@ -4,14 +4,14 @@ namespace repositories;
 
 use db\entity\User;
 
-class UserRepository extends BaseDbRepository
+class UserRepository extends BaseDbRepository implements UserRepositoryInterface
 {
     /**
      * @param int $userId
      * @return \db\entity\Entity|User
      * @throws \core\DBPropertyNotFoundException
      */
-    public function findUserById(int $userId):User
+    public function findUserById(int $userId): User
     {
         $stmt = $this->dbConnection->prepare('SELECT * FROM user WHERE id = ?');
         $stmt->execute(array($userId));
@@ -25,7 +25,7 @@ class UserRepository extends BaseDbRepository
      * @return \db\entity\Entity|User
      * @throws \core\DBPropertyNotFoundException
      */
-    public function findUserByEmail(string $email):User
+    public function findUserByEmail(string $email): User
     {
         $stmt = $this->dbConnection->prepare('SELECT * FROM user WHERE email = ?');
         $stmt->execute(array($email));
@@ -34,14 +34,21 @@ class UserRepository extends BaseDbRepository
         return $this->arrayToEntity($result[0], $user);
     }
 
-
-    public function createNewUser(): bool
+    /**
+     * @param string $login
+     * @param string $email
+     * @param string $password
+     *
+     * @return bool
+     */
+    public function createNewUser($login, $email, $password): bool
     {
-        $stmt = $this->dbConnection->prepare('INSERT INTO user (login, password, email) VALUES '
-            . '(:login, :password, :email)');
-        $stmt->bindParam(':login', $_POST['login']);
-        $stmt->bindParam(':password', password_hash($_POST['password'],PASSWORD_DEFAULT));
-        $stmt->bindParam(':email', $_POST['email']);
+        $stmt = $this->dbConnection->prepare(
+            'INSERT INTO user (login, password, email) VALUES (:login, :password, :email)');
+        $stmt->bindParam(':login', $login);
+        $stmt->bindParam(':password', password_hash($password, PASSWORD_DEFAULT));
+        $stmt->bindParam(':email', $email);
+
         return $stmt->execute();
     }
 
