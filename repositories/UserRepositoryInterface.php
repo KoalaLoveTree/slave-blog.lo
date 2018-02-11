@@ -23,7 +23,7 @@ interface UserRepositoryInterface
      * @param string $email
      * @return \db\entity\Entity|User
      */
-    public function findUserByEmail(string $email): User;
+    public function findUserByEmail(string $email);
 
     /**
      * @param string $login

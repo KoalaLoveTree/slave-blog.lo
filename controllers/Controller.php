@@ -25,6 +25,11 @@ class Controller
         $this->view = $view;
     }
 
+    protected function redirect($path)
+    {
+        header('Location: ' . $path);
+    }
+
     /**
      * @return array
      */

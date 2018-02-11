@@ -13,13 +13,68 @@ use db\entity\User;
 class AuthSessionHelper
 {
     const KEY_AUTH = 'AUTH';
+    const KEY_STATUS = 'STATUS';
+    const ROLE_ADMIN = 'admin';
+    const ROLE_USER = 'admin';
+    const ROLE_MODERATOR = 'moderator';
+    const ROLE_GUEST = 'guest';
 
     /**
-     * @param User $user
+     * @return bool
      */
+    public static function isLoggedIn(): bool
+    {
+        return isset($_SESSION[static::KEY_AUTH]);
+    }
+
+    /**
+     * @return null|string
+     */
+    protected static function getRole(): string
+    {
+        return $_SESSION[static::KEY_STATUS] ?? static::ROLE_GUEST;
+    }
+
+    /**
+     * @param string $role
+     * @return bool
+     */
+    protected static function isRole(string $role): bool
+    {
+        return $role === self::getRole();
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isUser():bool
+    {
+        return self::isRole(self::getRole());
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isAdmin():bool
+    {
+        return self::isRole(self::getRole());
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isModer():bool
+    {
+        return self::isRole(self::getRole());
+    }
+
+        /**
+         * @param User $user
+         */
     public static function login(User $user)
     {
         self::writeToSession(self::KEY_AUTH, $user->getId());
+        self::writeToSession(self::KEY_STATUS, $user->getRole());
     }
 
     /**
@@ -28,6 +83,11 @@ class AuthSessionHelper
      */
     protected static function writeToSession($key, $value)
     {
-        $_SERVER[$key] = $value;
+        $_SESSION[$key] = $value;
+    }
+
+    public static function logOut(): void
+    {
+        session_destroy();
     }
 }

@@ -25,13 +25,20 @@ class UserRepository extends BaseDbRepository implements UserRepositoryInterface
      * @return \db\entity\Entity|User
      * @throws \core\DBPropertyNotFoundException
      */
-    public function findUserByEmail(string $email): User
+    public function findUserByEmail(string $email)
     {
         $stmt = $this->dbConnection->prepare('SELECT * FROM user WHERE email = ?');
         $stmt->execute(array($email));
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $user = new User();
-        return $this->arrayToEntity($result[0], $user);
+
+        $data = $result[0] ?? null;
+
+        if (!$data) {
+            return null;
+        }
+
+        return $this->arrayToEntity($data, $user);
     }
 
     /**

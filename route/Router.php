@@ -11,15 +11,24 @@ class Router
 
     public function callAction(Route $route)
     {
-        $controllerName = 'controllers\\' . ucfirst($route->getController()) . 'Controller';
         try {
+            /** @var string $controllerName */
+            $controllerName = $this->getControllerName($route->getPath(),$route->getController());
             if (class_exists($controllerName)) {
                 $view = new View();
                 $view->setViewPath('view' . DIRECTORY_SEPARATOR . $route->getController());
                 /** @var Controller $controller */
                 $controller = new $controllerName;
                 $controller->setView($view);
-                $result = call_user_func_array([$controller, $route->getAction() . 'Action',], ($route->getParams()));
+
+                $method = [$controller, $route->getAction() . 'Action'];
+
+                if (!method_exists($method[0], $method[1])) {
+                    throw new FileNotFoundException();
+                }
+
+
+                $result = call_user_func_array($method, []);
                 if ($result !== false) {
                     return $result;
                 }
@@ -28,7 +37,36 @@ class Router
             throw new FileNotFoundException();
         } catch (FileNotFoundException $e) {
             http_response_code(404);
+            var_dump($route->getPath());
+            var_dump($controllerName);
             die('Page not found');
         }
+    }
+
+    /**
+     * @param $path
+     * @param $controller
+     * @return string
+     */
+    protected function getControllerName($path,$controller):string
+    {
+        if ($this->isControllerHavePath($path)) {
+            return 'controllers\\' . $path . DIRECTORY_SEPARATOR .
+                ucfirst($controller) . 'Controller';
+        }else{
+            return 'controllers\\' . ucfirst($controller) . 'Controller';
+        }
+    }
+
+    /**
+     * @param string $controllerPath
+     * @return bool
+     */
+    protected function isControllerHavePath(string $controllerPath): bool
+    {
+        if (empty($controllerPath)) {
+            return false;
+        }
+        return true;
     }
 }

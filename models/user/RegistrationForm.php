@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: AgyKoala
- * Date: 27.01.2018
- * Time: 8:35
+ * Date: 31.01.2018
+ * Time: 0:34
  */
 
 namespace models\User;
@@ -14,16 +14,18 @@ use models\BaseModel;
 use repositories\UserRepositoryInterface;
 
 /**
- * Class AuthForm
+ * Class RegistrationForm
  * @package models\User
  */
-class AuthForm extends BaseModel
+class RegistrationForm extends BaseModel
 {
     /** @var string */
     public $password;
 
     /** @var string */
     public $email;
+    /** @var string */
+    public $login;
 
     /** @var UserRepositoryInterface */
     protected $userRepository;
@@ -45,7 +47,7 @@ class AuthForm extends BaseModel
      */
     protected function validate(): bool
     {
-        return $this->isEmailValid() && $this->isPasswordValid();
+        return $this->isEmailValid() && $this->isEmailNotExist();
     }
 
     /**
@@ -63,35 +65,27 @@ class AuthForm extends BaseModel
     /**
      * @return bool
      */
-    protected function isEmailValid(): bool
+    protected function isEmailNotExist(): bool
+    {
+        if ($this->getUser()) {
+            $this->addError('Email is already exist');
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * @return bool
+     */
+    protected function isEmailValid():bool
     {
         $valid = filter_var($this->email, FILTER_VALIDATE_EMAIL);
 
         if (!$valid) {
-            $this->addError('Email is not valid');
+            $this->addError('Email is invalid');
         }
-
         return $valid;
     }
-
-    /**
-     * @return bool
-     */
-    protected function isPasswordValid(): bool
-    {
-        if (!$this->getUser()) {
-            $this->addError('User is not exist');
-            return false;
-        }
-
-        if (!password_verify($this->password, $this->getUser()->getPassword())) {
-            $this->addError('Password is invalid');
-            return false;
-        }
-
-        return true;
-    }
-
 
     /**
      * @return bool
@@ -99,7 +93,14 @@ class AuthForm extends BaseModel
     public function login(): bool
     {
         AuthSessionHelper::login($this->getUser());
-
         return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function createNewUser():bool
+    {
+        return $this->userRepository->createNewUser($this->login,$this->email,$this->password);
     }
 }

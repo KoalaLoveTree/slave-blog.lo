@@ -9,7 +9,7 @@ class WallController extends Controller
     public function indexAction()
     {
         $postRepo = $this->createPostRepository();
-        $posts = $postRepo->getPostsByAuthorId($_SESSION['userId']);
+        $posts = $postRepo->getPostsByAuthorId($_SESSION['AUTH']);
         return $this->getView()->render('wall',[
             'posts' => $posts
         ]);

@@ -5,32 +5,20 @@ namespace route;
 
 class Route
 {
-    /** @var array * */
-    private $params;
-
     /** @var string * */
     private $controller;
 
     /** @var string * */
     private $action;
 
-    public function __construct($controller, $action)
+    /** @var string */
+    private $path;
+
+    public function __construct($path,$controller, $action)
     {
         $this->controller = $controller;
         $this->action = $action;
-    }
-
-    public function setParams($params)
-    {
-        $this->params[] = $params;
-    }
-
-    /**
-     * @return array
-     */
-    public function getParams()
-    {
-        return $this->params ?? [];
+        $this->path = $path;
     }
 
     /**
@@ -49,6 +37,12 @@ class Route
         return $this->action;
     }
 
-
+    /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
 
 }

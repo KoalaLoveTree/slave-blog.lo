@@ -2,7 +2,10 @@
 
 namespace controllers;
 
+use core\App;
+use core\helper\AuthSessionHelper;
 use models\User\AuthForm;
+use models\User\RegistrationForm;
 use repositories\UserRepository;
 
 class UserController extends Controller
@@ -16,7 +19,7 @@ class UserController extends Controller
 
         if ($authForm->load($this->getPost())) {
             if ($authForm->isValid() && $authForm->login()) {
-                return $this->renderLogin('Welcome!');
+                $this->redirect('/');
             }
 
             return $this->renderLogin($authForm->getErrorString());
@@ -27,51 +30,30 @@ class UserController extends Controller
 
     public function signUpAction()
     {
-        return $this->getView()->render('signUp', []);
+        $registrationForm = $this->createRegistrationForm();
+        if ($registrationForm->load($this->getPost())) {
+            if ($registrationForm->isValid() && $registrationForm->createNewUser() && $registrationForm->login()) {
+                $this->redirect('/');
+            }
+            return $this->renderRegistration($registrationForm->getErrorString());
+        }
+        return $this->renderRegistration();
     }
 
-    public function signUpButtonAction()
+    public function adminAction()
     {
-       /* $userRepo = $this->createUserRepository();
-        $signUp = new AuthForm();
-        if (isset($_POST['signUpAction'])) {
-            if ($signUp->validate($_POST['email'])) {
-                if ($userRepo->createNewUser()) {
-                    if (!isset($_SESSION['userId'])) {
-                        $_SESSION['userId'] = $userRepo->findUserByEmail($_POST['email'])->getId();
-                        return $this->getView()->render('validation', [
-                            'message' => 'Welcome!!',
-                        ]);
-                    } else {
-                        return $this->getView()->render('validation', [
-                            'message' => 'Oops, u already in system!!!',
-                        ]);
-                    }
-                } else {
-                    return $this->getView()->render('validation', [
-                        'message' => 'User Always Exist',
-                    ]);
-                }
-            }
-            return $this->getView()->render('validation', [
-                'message' => 'Invalid E-Mail',
-            ]);
-        }
-        return $this->getView()->render('validation', [
-            'message' => 'Oops!!',
-        ]);*/
+
     }
 
     public function exitAction()
     {
-        session_destroy();
+        AuthSessionHelper::logOut();
 
-        return $this->getView()->render('validation', [
-            'message' => 'Come back again!!',
-        ]);
+        $this->redirect('/');
     }
 
     /**
+     * @param string $message
      * @return string
      */
     protected function renderLogin($message = '')
@@ -82,11 +64,32 @@ class UserController extends Controller
     }
 
     /**
+     * @param string $message
+     * @return string
+     */
+    protected function renderRegistration($message = '')
+    {
+        return $this->getView()->render('signUp', [
+            'message' => $message,
+        ]);
+    }
+
+    /**
      * @return AuthForm
      */
     protected function createAuthForm()
     {
         return new AuthForm(
+            $this->createUserRepository()
+        );
+    }
+
+    /**
+     * @return RegistrationForm
+     */
+    protected function createRegistrationForm()
+    {
+        return new RegistrationForm(
             $this->createUserRepository()
         );
     }

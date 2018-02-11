@@ -1,4 +1,10 @@
 <?php
+/**
+ * @var $content
+ */
+
+use core\helper\AuthSessionHelper;
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -39,15 +45,18 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <?php if (isset($_SESSION['userId'])){?>
-                    <li><a href="http://slave-blog.lo/user/profile">Profile</a></li>
-                    <li><a href="http://slave-blog.lo/wall">Wall</a></li>
-                    <?php }?>
+                    <?php if (AuthSessionHelper::isLoggedIn()): ?>
+                        <li><a href="http://slave-blog.lo/user/profile">Profile</a></li>
+                        <li><a href="http://slave-blog.lo/wall">Wall</a></li>
+                    <?php endif ?>
                     <li><a href="http://slave-blog.lo/category">Category</a></li>
+                    <?php if (AuthSessionHelper::isAdmin()):?>
+                        <li><a href="http://slave-blog.lo/admin/adminPanel/show">Admin Panel</a></li>
+                    <?php endif?>
             </div><!-- /.navbar-collapse -->
         </div>
     </div>
-    <?php if (!isset($_SESSION['userId'])) { ?>
+    <?php if (!AuthSessionHelper::isLoggedIn()): ?>
         <div class="col-md-4">
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
@@ -55,16 +64,14 @@
                     <li><a href="http://slave-blog.lo/user/signin">Sign In</a></li>
             </div><!-- /.navbar-collapse -->
         </div>
-        <?php ;
-    } else { ?>
+    <?php else: ?>
         <div class="col-md-4">
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="http://slave-blog.lo/user/exit">Exit</a></li>
             </div><!-- /.navbar-collapse -->
         </div>
-        <?php ;
-    } ?>
+    <?php endif ?>
 </nav>
 
 <div class="container-fluid">

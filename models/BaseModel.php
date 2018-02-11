@@ -19,10 +19,9 @@ abstract class BaseModel
         $atLeastOneLoaded = false;
 
         $properties = $this->getPublicProperties();
-
         foreach ($properties as $property) {
-            if ($value = RequestHelper::getValue($data, $property)) {
-                $this->{$property} = $value;
+            if ($value = RequestHelper::getValue($data, $property->getName())) {
+                $this->{$property->getName()} = $value;
                 $atLeastOneLoaded = true;
             }
         }

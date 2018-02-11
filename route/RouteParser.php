@@ -5,5 +5,5 @@ namespace route;
 
 interface RouteParser
 {
-    public static function parse($original_route);
+    public static function parseUrl($original_route);
 }

@@ -48,7 +48,7 @@ class PostRepository extends BaseDbRepository
      * @param int $authorId
      * @return array
      */
-    public function getPostsByAuthorId(int $authorId): array
+    public function getPostsByAuthorId(int $authorId): ?array
     {
         $stmt = $this->dbConnection->prepare('SELECT * FROM post WHERE authorId = ?');
         $stmt->execute(array($authorId));

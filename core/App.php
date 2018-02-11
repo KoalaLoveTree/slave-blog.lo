@@ -10,6 +10,8 @@ class App
     /** @var DB */
     protected static $dbm;
 
+    protected static $test;
+
     /**
      * @return DB
      */
@@ -25,6 +27,4 @@ class App
     {
         static::$dbm = $db;
     }
-
-
 }

@@ -9,6 +9,7 @@ class IndexController extends Controller
 
     public function indexAction()
     {
+        var_dump($_GET);
         $postRepo = $this->createPostRepository();
         $data = $postRepo->getPostsForHomePage();
 
