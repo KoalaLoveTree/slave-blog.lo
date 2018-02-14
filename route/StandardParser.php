@@ -22,6 +22,7 @@ class StandardParser implements RouteParser
             $parts = self::parse($updateRoute);
         }
         $route = new Route($parts[0], $parts[1], $parts[2]);
+        var_dump($route);
         return $route;
     }
 
@@ -31,6 +32,7 @@ class StandardParser implements RouteParser
      */
     protected static function parse(array $url): array
     {
+        var_dump($url);
         $newUrl = self::checkUrlType($url);
         if ($newUrl != null) {
             return $newUrl;
@@ -59,7 +61,7 @@ class StandardParser implements RouteParser
 
 
         /*just help pls*/
-        if (count($url)>=3){
+        if (count($url)>=4){
             return null;
         }
         if (empty($url[0]) && empty($url[1])) {
