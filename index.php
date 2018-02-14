@@ -22,5 +22,4 @@ $conf = require 'core\config.php';
 session_start();
 
 $router = new Router();
-var_dump($url);
 echo $router->callAction(StandardParser::parseUrl($url));

@@ -3,9 +3,10 @@
 namespace repositories;
 
 
+use core\helper\AuthSessionHelper;
 use db\entity\Post;
 
-class PostRepository extends BaseDbRepository
+class PostRepository extends BaseDbRepository implements PostRepositoryInterface
 {
     /**
      * @return array
@@ -54,6 +55,35 @@ class PostRepository extends BaseDbRepository
         $stmt->execute(array($authorId));
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $this->populateEntity($result);
+    }
+
+    /**
+     * @param string $title
+     * @param int $categoryId
+     * @param string $content
+     * @return bool|mixed
+     */
+    public function createNewPost(string $title, int $categoryId, string $content)
+    {
+        $stmt = $this->dbConnection->prepare(
+            'INSERT INTO post (authorId, categoryId, title, content) VALUES (:authorId, :categoryId, :title, :content)');
+        $stmt->bindParam(':authorId',AuthSessionHelper::getId() );
+        $stmt->bindParam(':categoryId', $categoryId);
+        $stmt->bindParam(':title', $title);
+        $stmt->bindParam(':content', $content);
+
+        return $stmt->execute();
+    }
+
+    /**
+     * @return int
+     */
+    public function getLastPostId(): int
+    {
+        $stmt = $this->dbConnection->prepare('SELECT id FROM post ORDER BY id DESC LIMIT 1');
+        $stmt->execute();
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $result[0]['id'];
     }
 
     public function getEntityClassName(): string

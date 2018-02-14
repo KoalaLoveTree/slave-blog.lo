@@ -8,6 +8,10 @@ use core\PermissionDeniedException;
 
 class AdminController extends Controller
 {
+    /**
+     * AdminController constructor.
+     * @throws PermissionDeniedException
+     */
     public function __construct()
     {
         if (!AuthSessionHelper::isAdmin()) {

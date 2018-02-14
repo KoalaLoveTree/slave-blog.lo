@@ -4,20 +4,25 @@ namespace controllers;
 
 use core\App;
 use core\helper\AuthSessionHelper;
+use db\entity\User;
 use models\User\AuthForm;
+use models\User\CreateNewPostForm;
 use models\User\RegistrationForm;
+use repositories\CategoryRepository;
+use repositories\PostRepository;
 use repositories\UserRepository;
 
 class UserController extends Controller
 {
     /**
      * @return string
+     * @throws \ReflectionException
      */
     public function signInAction()
     {
         $authForm = $this->createAuthForm();
 
-        if ($authForm->load($this->getPost())) {
+        if ($authForm->load()) {
             if ($authForm->isValid() && $authForm->login()) {
                 $this->redirect('/');
             }
@@ -31,7 +36,7 @@ class UserController extends Controller
     public function signUpAction()
     {
         $registrationForm = $this->createRegistrationForm();
-        if ($registrationForm->load($this->getPost())) {
+        if ($registrationForm->load()) {
             if ($registrationForm->isValid() && $registrationForm->createNewUser() && $registrationForm->login()) {
                 $this->redirect('/');
             }
@@ -40,9 +45,31 @@ class UserController extends Controller
         return $this->renderRegistration();
     }
 
-    public function adminAction()
+    public function profileAction()
     {
+        $userRepo = $this->createUserRepository();
+        $postRepo = $this->createPostRepository();
+        if (AuthSessionHelper::isLoggedIn()) {
+            $user = $userRepo->findUserById(AuthSessionHelper::getId());
+            $usersPosts = $postRepo->getPostsByAuthorId(AuthSessionHelper::getId());
+            return $this->getView()->render('profile', [
+                'u' => $user,
+                'usersPosts' => $usersPosts,
+            ]);
+        }
+        die('Sign in please!');
+    }
 
+    public function createNewPostAction()
+    {
+        $createNewPostForm = $this->createCreateNewPostForm();
+        if ($createNewPostForm->load()){
+            if ($createNewPostForm->isValid()&&$createNewPostForm->createNewPost()){
+                $this->redirect('/post/show/?id='.$createNewPostForm->getNewPostId());
+            }
+            return $this->renderCreateNewPost($createNewPostForm->getErrorString());
+        }
+        return $this->renderCreateNewPost();
     }
 
     public function exitAction()
@@ -74,6 +101,16 @@ class UserController extends Controller
         ]);
     }
 
+    protected function renderCreateNewPost($message = '')
+    {
+        $categoryRepo = $this->createCategoryRepository();
+        $categories = $categoryRepo->getAllCategories();
+        return $this->getView()->render('createNewPost', [
+            'message' => $message,
+            'categories' => $categories,
+        ]);
+    }
+
     /**
      * @return AuthForm
      */
@@ -94,6 +131,13 @@ class UserController extends Controller
         );
     }
 
+    protected function createCreateNewPostForm()
+    {
+        return new CreateNewPostForm(
+            $this->createPostRepository()
+        );
+    }
+
     /**
      * @return UserRepository
      */
@@ -102,4 +146,13 @@ class UserController extends Controller
         return new UserRepository();
     }
 
+    protected function createPostRepository(): PostRepository
+    {
+        return new PostRepository();
+    }
+
+    protected function createCategoryRepository(): CategoryRepository
+    {
+        return new CategoryRepository();
+    }
 }

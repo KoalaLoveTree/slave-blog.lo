@@ -5,13 +5,16 @@ namespace controllers;
 use repositories\CategoryRepository;
 use repositories\PostRepository;
 use repositories\UserRepository;
+use route\ParseParams;
 
 class PostController extends Controller
 {
-    public function showAction(string $name, string $id)
+    public function showAction()
     {
+
         $postRepo = $this->createPostRepository();
-        $post = $postRepo->getPostById((int)$id);
+        $id = (int)ParseParams::getParams(['0'=>'id'])['id'];
+        $post = $postRepo->getPostById($id);
         $userRepo = $this->createUserRepository();
         $author = $userRepo->findUserById((int)$post->getAuthorId());
         $categoryRepo = $this->createCategoryRepository();

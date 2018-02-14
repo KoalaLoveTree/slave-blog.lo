@@ -4,6 +4,7 @@ namespace controllers;
 
 use repositories\CategoryRepository;
 use repositories\PostRepository;
+use route\ParseParams;
 
 class CategoryController extends Controller
 {
@@ -18,10 +19,11 @@ class CategoryController extends Controller
 
     }
 
-    public function allPostsAction(string $first, string $second)
+    public function allPostsAction()
     {
         $postRepo = $this->createPostRepository();
-        $categoryPosts = $postRepo->getPostByCategory($second);
+        $id = (int)ParseParams::getParams(['0'=>'id'])['id'];
+        $categoryPosts = $postRepo->getPostByCategory($id);
         return $this->getView()->render('categoryPosts', [
             'posts' => $categoryPosts,
         ]);

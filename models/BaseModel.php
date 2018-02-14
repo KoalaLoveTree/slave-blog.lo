@@ -10,22 +10,20 @@ abstract class BaseModel
     protected $errors = [];
 
     /**
-     * @param array $data
-     *
      * @return bool
+     * @throws \ReflectionException
      */
-    public function load(array $data): bool
+    public function load(): bool
     {
         $atLeastOneLoaded = false;
 
         $properties = $this->getPublicProperties();
         foreach ($properties as $property) {
-            if ($value = RequestHelper::getValue($data, $property->getName())) {
+            if ($value = RequestHelper::getPost($property->getName())) {
                 $this->{$property->getName()} = $value;
                 $atLeastOneLoaded = true;
             }
         }
-
         return $atLeastOneLoaded;
     }
 
@@ -68,6 +66,7 @@ abstract class BaseModel
 
     /**
      * @return \ReflectionProperty[]
+     * @throws \ReflectionException
      */
     protected function getPublicProperties(): array
     {
@@ -76,6 +75,7 @@ abstract class BaseModel
 
     /**
      * @return \ReflectionClass
+     * @throws \ReflectionException
      */
     protected function createReflectionClass(): \ReflectionClass
     {

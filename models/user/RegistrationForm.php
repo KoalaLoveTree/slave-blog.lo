@@ -21,7 +21,6 @@ class RegistrationForm extends BaseModel
 {
     /** @var string */
     public $password;
-
     /** @var string */
     public $email;
     /** @var string */

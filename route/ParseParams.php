@@ -3,6 +3,8 @@
 namespace route;
 
 
+use core\helper\RequestHelper;
+
 class ParseParams
 {
     /**
@@ -16,7 +18,7 @@ class ParseParams
             if (!self::ifParamsExist($param)){
                 return null;
             }
-            $tmp = [$param => $param];
+            $tmp = [$param => self::getParam($param)];
         }
         return $tmp;
     }
@@ -28,5 +30,14 @@ class ParseParams
     protected static function ifParamsExist(string $name)
     {
         return isset($_GET[$name]);
+    }
+
+    /**
+     * @param string $name
+     * @return null
+     */
+    protected static function getParam(string $name)
+    {
+        return RequestHelper::getQueryString($name);
     }
 }

@@ -21,6 +21,9 @@ class CategoryRepository extends BaseDbRepository
         return $this->arrayToEntity($result[0], $category);
     }
 
+    /**
+     * @return array
+     */
     public function getAllCategories():array
     {
         $stmt = $this->dbConnection->prepare('SELECT * FROM category');

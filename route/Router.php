@@ -4,11 +4,16 @@ namespace route;
 
 use controllers\Controller;
 use core\FileNotFoundException;
+use core\PermissionDeniedException;
 use view\View;
 
 class Router
 {
 
+    /**
+     * @param Route $route
+     * @return mixed
+     */
     public function callAction(Route $route)
     {
         try {
@@ -51,10 +56,10 @@ class Router
     protected function getControllerName($path,$controller):string
     {
         if ($this->isControllerHavePath($path)) {
-            return 'controllers\\' . $path . DIRECTORY_SEPARATOR .
+            return  $path . DIRECTORY_SEPARATOR .
                 ucfirst($controller) . 'Controller';
         }else{
-            return 'controllers\\' . ucfirst($controller) . 'Controller';
+            return ucfirst($controller) . 'Controller';
         }
     }
 

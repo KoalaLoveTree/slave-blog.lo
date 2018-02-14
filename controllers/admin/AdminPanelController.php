@@ -12,6 +12,11 @@ class AdminPanelController extends AdminController
 
     public function indexAction()
     {
+        echo 'index';
+    }
 
+    public function showAction()
+    {
+        echo 'show';
     }
 }

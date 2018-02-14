@@ -51,7 +51,7 @@ use core\helper\AuthSessionHelper;
                     <?php endif ?>
                     <li><a href="http://slave-blog.lo/category">Category</a></li>
                     <?php if (AuthSessionHelper::isAdmin()):?>
-                        <li><a href="http://slave-blog.lo/admin/adminPanel/show">Admin Panel</a></li>
+                        <li><a href="http://slave-blog.lo/admin/adminPanel">Admin Panel</a></li>
                     <?php endif?>
             </div><!-- /.navbar-collapse -->
         </div>

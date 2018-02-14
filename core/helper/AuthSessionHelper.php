@@ -27,6 +27,14 @@ class AuthSessionHelper
         return isset($_SESSION[static::KEY_AUTH]);
     }
 
+    public static function getId(): ?string
+    {
+        if (self::isLoggedIn()){
+            return $_SESSION[self::KEY_AUTH];
+        }
+        return null;
+    }
+
     /**
      * @return null|string
      */
@@ -47,30 +55,30 @@ class AuthSessionHelper
     /**
      * @return bool
      */
-    public static function isUser():bool
+    public static function isUser(): bool
     {
-        return self::isRole(self::getRole());
+        return self::isRole(self::ROLE_USER);
     }
 
     /**
      * @return bool
      */
-    public static function isAdmin():bool
+    public static function isAdmin(): bool
     {
-        return self::isRole(self::getRole());
+        return self::isRole(self::ROLE_ADMIN);
     }
 
     /**
      * @return bool
      */
-    public static function isModer():bool
+    public static function isModer(): bool
     {
-        return self::isRole(self::getRole());
+        return self::isRole(self::ROLE_MODERATOR);
     }
 
-        /**
-         * @param User $user
-         */
+    /**
+     * @param User $user
+     */
     public static function login(User $user)
     {
         self::writeToSession(self::KEY_AUTH, $user->getId());
