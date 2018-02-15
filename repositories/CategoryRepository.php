@@ -12,7 +12,7 @@ class CategoryRepository extends BaseDbRepository
      * @return Category|\db\entity\Entity
      * @throws \core\DBPropertyNotFoundException
      */
-    public function getCategoryById(int $id):Category
+    public function getCategoryById(int $id): Category
     {
         $stmt = $this->dbConnection->prepare('SELECT * FROM category WHERE id = ?');
         $stmt->execute(array($id));
@@ -24,7 +24,7 @@ class CategoryRepository extends BaseDbRepository
     /**
      * @return array
      */
-    public function getAllCategories():array
+    public function getAllCategories(): array
     {
         $stmt = $this->dbConnection->prepare('SELECT * FROM category');
         $stmt->execute();

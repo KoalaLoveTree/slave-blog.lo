@@ -6,10 +6,10 @@ class Category implements Entity
 {
     const TABLE_NAME = 'category';
 
-    /** @var int **/
+    /** @var int * */
     private $id;
 
-    /** @var string **/
+    /** @var string * */
     private $title;
 
 
@@ -44,7 +44,6 @@ class Category implements Entity
     {
         $this->title = $title;
     }
-
 
 
 }

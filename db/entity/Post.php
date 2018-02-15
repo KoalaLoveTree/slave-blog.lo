@@ -7,22 +7,22 @@ class Post implements Entity
 
     const TABLE_NAME = 'post';
 
-    /**@var int**/
+    /**@var int* */
     private $id;
 
-    /**@var int**/
+    /**@var int* */
     private $categoryId;
 
-    /**@var int**/
+    /**@var int* */
     private $authorId;
 
-    /**@var string**/
+    /**@var string* */
     private $title;
 
-    /**@var string**/
+    /**@var string* */
     private $content;
 
-    /**@var string**/
+    /**@var string* */
     private $pubdate;
 
 
@@ -121,7 +121,6 @@ class Post implements Entity
     {
         $this->pubdate = $pubdate;
     }
-
 
 
 }

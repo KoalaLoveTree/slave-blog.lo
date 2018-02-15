@@ -11,7 +11,7 @@ class WallController extends Controller
     {
         $postRepo = $this->createPostRepository();
         $posts = $postRepo->getPostsByAuthorId(AuthSessionHelper::getId());
-        return $this->getView()->render('wall',[
+        return $this->getView()->render('wall', [
             'posts' => $posts
         ]);
 

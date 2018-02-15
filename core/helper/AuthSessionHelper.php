@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andreyons
- * Date: 1/30/18
- * Time: 10:59 PM
- */
 
 namespace core\helper;
 
@@ -27,9 +21,12 @@ class AuthSessionHelper
         return isset($_SESSION[static::KEY_AUTH]);
     }
 
+    /**
+     * @return null|string
+     */
     public static function getId(): ?string
     {
-        if (self::isLoggedIn()){
+        if (self::isLoggedIn()) {
             return $_SESSION[self::KEY_AUTH];
         }
         return null;
@@ -38,7 +35,7 @@ class AuthSessionHelper
     /**
      * @return null|string
      */
-    protected static function getRole(): string
+    protected static function getRole(): ?string
     {
         return $_SESSION[static::KEY_STATUS] ?? static::ROLE_GUEST;
     }

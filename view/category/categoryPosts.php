@@ -1,5 +1,5 @@
 <?php
-/** @var array $posts **/
+/** @var array $posts * */
 ?>
 <ul class="list-group">
         <?php foreach ($posts as $post) : ?>

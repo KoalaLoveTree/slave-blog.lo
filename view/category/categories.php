@@ -1,5 +1,5 @@
 <?php
-/** @var array $categories **/
+/** @var array $categories * */
 ?>
 <ul class="list-group">
         <?php foreach ($categories as $category) : ?>

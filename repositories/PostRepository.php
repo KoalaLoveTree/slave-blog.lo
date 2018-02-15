@@ -67,7 +67,7 @@ class PostRepository extends BaseDbRepository implements PostRepositoryInterface
     {
         $stmt = $this->dbConnection->prepare(
             'INSERT INTO post (authorId, categoryId, title, content) VALUES (:authorId, :categoryId, :title, :content)');
-        $stmt->bindParam(':authorId',AuthSessionHelper::getId() );
+        $stmt->bindParam(':authorId', AuthSessionHelper::getId());
         $stmt->bindParam(':categoryId', $categoryId);
         $stmt->bindParam(':title', $title);
         $stmt->bindParam(':content', $content);

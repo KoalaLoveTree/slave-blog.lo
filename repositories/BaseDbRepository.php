@@ -17,7 +17,7 @@ abstract class BaseDbRepository
         $this->dbConnection = App::getDbm()->getDB();
     }
 
-    abstract public function getEntityClassName() : string;
+    abstract public function getEntityClassName(): string;
 
     protected function populateEntity(array $data): array
     {

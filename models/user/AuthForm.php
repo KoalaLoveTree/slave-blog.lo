@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: AgyKoala
- * Date: 27.01.2018
- * Time: 8:35
- */
 
 namespace models\User;
 

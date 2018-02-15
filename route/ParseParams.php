@@ -15,7 +15,7 @@ class ParseParams
     {
         $tmp = [];
         foreach ($paramsName as $param) {
-            if (!self::ifParamsExist($param)){
+            if (!self::ifParamsExist($param)) {
                 return null;
             }
             $tmp = [$param => self::getParam($param)];
@@ -27,16 +27,16 @@ class ParseParams
      * @param string $name
      * @return bool
      */
-    protected static function ifParamsExist(string $name)
+    protected static function ifParamsExist(string $name): bool
     {
         return isset($_GET[$name]);
     }
 
     /**
      * @param string $name
-     * @return null
+     * @return mixed|null
      */
-    protected static function getParam(string $name)
+    protected static function getParam(string $name): ?mixed
     {
         return RequestHelper::getQueryString($name);
     }

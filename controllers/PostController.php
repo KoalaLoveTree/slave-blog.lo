@@ -13,7 +13,7 @@ class PostController extends Controller
     {
 
         $postRepo = $this->createPostRepository();
-        $id = (int)ParseParams::getParams(['0'=>'id'])['id'];
+        $id = (int)ParseParams::getParams(['0' => 'id'])['id'];
         $post = $postRepo->getPostById($id);
         $userRepo = $this->createUserRepository();
         $author = $userRepo->findUserById((int)$post->getAuthorId());

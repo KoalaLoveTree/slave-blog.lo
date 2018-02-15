@@ -10,12 +10,10 @@ class App
     /** @var DB */
     protected static $dbm;
 
-    protected static $test;
-
     /**
      * @return DB
      */
-    public static function getDbm()
+    public static function getDbm(): DB
     {
         return static::$dbm;
     }

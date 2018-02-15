@@ -50,9 +50,9 @@ use core\helper\AuthSessionHelper;
                         <li><a href="http://slave-blog.lo/wall">Wall</a></li>
                     <?php endif ?>
                     <li><a href="http://slave-blog.lo/category">Category</a></li>
-                    <?php if (AuthSessionHelper::isAdmin()):?>
+                    <?php if (AuthSessionHelper::isAdmin()): ?>
                         <li><a href="http://slave-blog.lo/admin/adminPanel">Admin Panel</a></li>
-                    <?php endif?>
+                    <?php endif ?>
             </div><!-- /.navbar-collapse -->
         </div>
     </div>

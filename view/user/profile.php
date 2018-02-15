@@ -14,5 +14,5 @@
             <?php endforeach ?>
 </ul>
 <form action="/user/createnewpost" method="post" role="presentation">
-<button class=" btn btn-lg btn-primary btn-block" name="createNewPostAction" type="submit">Create New Post</button>
+    <button class=" btn btn-lg btn-primary btn-block" name="createNewPostAction" type="submit">Create New Post</button>
 </form>

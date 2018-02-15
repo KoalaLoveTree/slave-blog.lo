@@ -14,11 +14,11 @@ class Router
      * @param Route $route
      * @return mixed
      */
-    public function callAction(Route $route)
+    public function callAction(Route $route): mixed
     {
         try {
             /** @var string $controllerName */
-            $controllerName = $this->getControllerName($route->getPath(),$route->getController());
+            $controllerName = $this->getControllerName($route->getPath(), $route->getController());
             if (class_exists($controllerName)) {
                 $view = new View();
                 $view->setViewPath('view' . DIRECTORY_SEPARATOR . $route->getController());
@@ -53,12 +53,12 @@ class Router
      * @param $controller
      * @return string
      */
-    protected function getControllerName($path,$controller):string
+    protected function getControllerName($path, $controller): string
     {
         if ($this->isControllerHavePath($path)) {
-            return  $path . DIRECTORY_SEPARATOR .
+            return $path . DIRECTORY_SEPARATOR .
                 ucfirst($controller) . 'Controller';
-        }else{
+        } else {
             return ucfirst($controller) . 'Controller';
         }
     }

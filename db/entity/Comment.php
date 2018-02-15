@@ -7,19 +7,19 @@ class Comment implements Entity
 
     const TABLE_NAME = 'comment';
 
-    /**@var int**/
+    /**@var int* */
     private $id;
 
-    /**@var int**/
+    /**@var int* */
     private $postId;
 
-    /**@var int**/
+    /**@var int* */
     private $authorId;
 
-    /**@var string**/
+    /**@var string* */
     private $content;
 
-    /**@var string**/
+    /**@var string* */
     private $pubtime;
 
     /**
@@ -101,7 +101,6 @@ class Comment implements Entity
     {
         $this->pubtime = $pubtime;
     }
-
 
 
 }

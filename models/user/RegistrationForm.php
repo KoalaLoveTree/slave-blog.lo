@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: AgyKoala
- * Date: 31.01.2018
- * Time: 0:34
- */
 
 namespace models\User;
 
@@ -72,11 +66,11 @@ class RegistrationForm extends BaseModel
         }
         return true;
     }
-    
+
     /**
      * @return bool
      */
-    protected function isEmailValid():bool
+    protected function isEmailValid(): bool
     {
         $valid = filter_var($this->email, FILTER_VALIDATE_EMAIL);
 
@@ -98,8 +92,8 @@ class RegistrationForm extends BaseModel
     /**
      * @return bool
      */
-    public function createNewUser():bool
+    public function createNewUser(): bool
     {
-        return $this->userRepository->createNewUser($this->login,$this->email,$this->password);
+        return $this->userRepository->createNewUser($this->login, $this->email, $this->password);
     }
 }

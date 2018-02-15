@@ -1,25 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: AgyKoala
- * Date: 14.02.2018
- * Time: 3:06
- */
 
 namespace repositories;
 
+
+use db\entity\Category;
 
 interface CategoryRepositoryInterface
 {
     /**
      * @param int $id
-     * @return Category|\db\entity\Entity
-     * @throws \core\DBPropertyNotFoundException
+     * @return Category
      */
-    public function getCategoryById(int $id):Category;
+    public function getCategoryById(int $id): Category;
 
     /**
      * @return array
      */
-    public function getAllCategories():array;
+    public function getAllCategories(): array;
 }

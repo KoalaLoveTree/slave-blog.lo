@@ -7,19 +7,19 @@ class User implements Entity
 
     const TABLE_NAME = 'user';
 
-    /**@var int**/
+    /**@var int* */
     private $id;
 
-    /**@var string**/
+    /**@var string* */
     private $login;
 
-    /**@var string**/
+    /**@var string* */
     private $password;
 
-    /**@var string**/
+    /**@var string* */
     private $email;
 
-    /**@var string**/
+    /**@var string* */
     private $role;
 
 
@@ -102,7 +102,6 @@ class User implements Entity
     {
         $this->role = $role;
     }
-
 
 
 }

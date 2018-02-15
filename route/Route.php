@@ -14,7 +14,13 @@ class Route
     /** @var string */
     private $path;
 
-    public function __construct($path,$controller, $action)
+    /**
+     * Route constructor.
+     * @param $path
+     * @param $controller
+     * @param $action
+     */
+    public function __construct($path, $controller, $action)
     {
         $this->controller = $controller;
         $this->action = $action;

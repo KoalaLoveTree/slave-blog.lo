@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: AgyKoala
- * Date: 14.02.2018
- * Time: 3:04
- */
 
 namespace repositories;
 
@@ -43,7 +37,7 @@ interface PostRepositoryInterface
      * @param string $content
      * @return mixed
      */
-    public function createNewPost(string $title,int $categoryId,string $content);
+    public function createNewPost(string $title, int $categoryId, string $content);
 
     /**
      * @return int

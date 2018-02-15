@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: AgyKoala
- * Date: 30.01.2018
- * Time: 22:51
- */
 
 namespace core\helper;
 
@@ -22,7 +16,7 @@ class RequestHelper
      *
      * @return mixed|null
      */
-    public static function getPost(string $key, $default = null)
+    public static function getPost(string $key, $default = null): ?mixed
     {
         return static::getValue($_POST, $key, $default);
     }
@@ -32,9 +26,10 @@ class RequestHelper
      * @param string $key
      * @param null $default
      *
-     * @return null
+     *
+     * @return mixed|null
      */
-    public static function getQueryString(string $key, $default = null)
+    public static function getQueryString(string $key, $default = null): ?mixed
     {
         return static::getValue($_GET, $key, $default);
     }
@@ -46,7 +41,7 @@ class RequestHelper
      *
      * @return mixed|null
      */
-    public static function getValue(array $data, string $key, $default = null)
+    public static function getValue(array $data, string $key, $default = null): ?mixed
     {
         return $data[$key] ?? $default;
     }

@@ -22,7 +22,7 @@ class CategoryController extends Controller
     public function allPostsAction()
     {
         $postRepo = $this->createPostRepository();
-        $id = (int)ParseParams::getParams(['0'=>'id'])['id'];
+        $id = (int)ParseParams::getParams(['0' => 'id'])['id'];
         $categoryPosts = $postRepo->getPostByCategory($id);
         return $this->getView()->render('categoryPosts', [
             'posts' => $categoryPosts,

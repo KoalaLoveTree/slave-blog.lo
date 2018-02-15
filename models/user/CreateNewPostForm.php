@@ -1,4 +1,5 @@
 <?php
+
 namespace models\User;
 
 use models\BaseModel;
@@ -67,7 +68,6 @@ class CreateNewPostForm extends BaseModel
     protected function isCategoryNotSelect(): bool
     {
         if ($this->categoryId == null) {
-            var_dump($_POST);
             $this->addError('Select category');
             return false;
         }
@@ -82,7 +82,7 @@ class CreateNewPostForm extends BaseModel
         return $this->postRepository->createNewPost($this->title, $this->categoryId, $this->content);
     }
 
-    public function getNewPostId():int
+    public function getNewPostId(): int
     {
         return $this->postRepository->getLastPostId();
     }

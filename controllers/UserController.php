@@ -2,9 +2,7 @@
 
 namespace controllers;
 
-use core\App;
 use core\helper\AuthSessionHelper;
-use db\entity\User;
 use models\User\AuthForm;
 use models\User\CreateNewPostForm;
 use models\User\RegistrationForm;
@@ -63,9 +61,9 @@ class UserController extends Controller
     public function createNewPostAction()
     {
         $createNewPostForm = $this->createCreateNewPostForm();
-        if ($createNewPostForm->load()){
-            if ($createNewPostForm->isValid()&&$createNewPostForm->createNewPost()){
-                $this->redirect('/post/show/?id='.$createNewPostForm->getNewPostId());
+        if ($createNewPostForm->load()) {
+            if ($createNewPostForm->isValid() && $createNewPostForm->createNewPost()) {
+                $this->redirect('/post/show/?id=' . $createNewPostForm->getNewPostId());
             }
             return $this->renderCreateNewPost($createNewPostForm->getErrorString());
         }

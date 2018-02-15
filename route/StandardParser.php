@@ -13,17 +13,18 @@ class StandardParser implements RouteParser
      */
     public static function parseUrl($original_route): Route
     {
-        $newRoute = strstr($original_route,'?',true);
-        if (!$newRoute){
+        if ($original_route == '/') {
+            return new Route('controllers', 'index', 'index');
+        }
+        $newRoute = strstr($original_route, '?', true);
+        if (!$newRoute) {
             $parts = self::parse(explode('/', $original_route));
-        }else{
+        } else {
             $updateRoute = explode('/', $newRoute);
             array_pop($updateRoute);
             $parts = self::parse($updateRoute);
         }
-        $route = new Route($parts[0], $parts[1], $parts[2]);
-        var_dump($route);
-        return $route;
+        return new Route($parts['path'], $parts['controller'], $parts['action']);
     }
 
     /**
@@ -32,23 +33,20 @@ class StandardParser implements RouteParser
      */
     protected static function parse(array $url): array
     {
-        var_dump($url);
-        $newUrl = self::checkUrlType($url);
-        if ($newUrl != null) {
-            return $newUrl;
-        }
         array_shift($url);
-        $count = count($url);
-        $path = 'controllers';
-        for ($i = $count - 3; $i >= 0; $i--) {
-            $path .= DIRECTORY_SEPARATOR . $url[$i];
+        if (empty($url)) {
+            return [
+                'path' => 'controllers',
+                'controller' => 'index',
+                'action' => 'index',
+            ];
         }
-        $controller = self::checkControllerName($url[$count - 2], $path);
-        $action = self::checkActionName($url[$count - 1], $controller, $path);
+        $controllerAndPath = self::identifyControllerName($url);
+        $action = self::identifyActionName($url, $controllerAndPath);
         return [
-            '0' => $path,
-            '1' => $controller,
-            '2' => $action,
+            'path' => $controllerAndPath['path'],
+            'controller' => $controllerAndPath['controller'],
+            'action' => $action,
         ];
     }
 
@@ -56,66 +54,83 @@ class StandardParser implements RouteParser
      * @param array $url
      * @return array
      */
-    protected static function checkUrlType(array $url): ?array
+    protected static function identifyControllerName(array $url): array
     {
-
-
-        /*just help pls*/
-        if (count($url)>=4){
-            return null;
-        }
-        if (empty($url[0]) && empty($url[1])) {
-            return [
-                '0' => 'controllers',
-                '1' => 'index',
-                '2' => 'index',
-            ];
-        }
-        if (empty($url[2]) && !empty($url[1])) {
-            return [
-                '0' => 'controllers',
-                '1' => $url[1],
-                '2' => 'index',
-            ];
+        $path = array_reverse($url);
+        foreach ($path as $piece) {
+            array_pop($url);
+            $currentPath = self::identifyCurrentPath($url);
+            if (self::checkControllerName($piece, $currentPath)) {
+                return [
+                    'path' => $currentPath,
+                    'controller' => $piece,
+                ];
+            }
         }
         return [
-            '0' => 'controllers',
-            '1' => $url[1],
-            '2' => $url[2],
+            'path' => 'controllers',
+            'controller' => 'index',
         ];
+    }
+
+    /**
+     * @param array $path
+     * @return string
+     */
+    protected static function identifyCurrentPath(array $path): string
+    {
+        if (empty($path)) {
+            return 'controllers';
+        }
+        return 'controllers' . DIRECTORY_SEPARATOR . implode('\\', $path);
     }
 
     /**
      * @param string $name
      * @param string $path
-     * @return string
+     * @return bool
      */
-    protected
-    static function checkControllerName(string $name, string $path): string
+    protected static function checkControllerName(string $name, string $path): bool
     {
         if (!class_exists($path . DIRECTORY_SEPARATOR . ucfirst($name) . 'Controller', true)) {
-            return 'index';
+            return false;
         }
-        return $name;
+        return true;
+    }
+
+    /**
+     * @param array $url
+     * @param array $controllerAndPath
+     * @return string
+     */
+    protected static function identifyActionName(array $url, array $controllerAndPath): string
+    {
+        $path = array_reverse($url);
+        foreach ($path as $piece) {
+            if (self::checkActionName($piece, $controllerAndPath['controller'], $controllerAndPath['path'])) {
+                return $piece;
+            }
+        }
+        return 'index';
     }
 
     /**
      * @param string $name
      * @param string $className
      * @param string $path
-     * @return string
+     * @return bool
      */
-    protected static function checkActionName(string $name, string $className, string $path): string
+    protected static function checkActionName(string $name, string $className, string $path): bool
     {
-        $className = $path .DIRECTORY_SEPARATOR .ucfirst($className) . 'Controller';
+        $className = $path . DIRECTORY_SEPARATOR . ucfirst($className) . 'Controller';
         try {
             if (!method_exists(new $className, $name . 'Action')) {
-                return 'index';
+                return false;
             }
-        }catch (PermissionDeniedException $e){
+        } catch (PermissionDeniedException $e) {
             http_response_code(403);
             die('U\'r not admin');
         }
-        return $name;
+        return true;
     }
 }
