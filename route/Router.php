@@ -38,7 +38,6 @@ class Router
                     return $result;
                 }
             }
-
             throw new FileNotFoundException();
         } catch (FileNotFoundException $e) {
             http_response_code(404);

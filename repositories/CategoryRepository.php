@@ -7,6 +7,8 @@ use db\entity\Category;
 
 class CategoryRepository extends BaseDbRepository
 {
+    const TABLE_NAME_CATEGORY = 'category';
+
     /**
      * @param int $id
      * @return Category|\db\entity\Entity
@@ -14,7 +16,7 @@ class CategoryRepository extends BaseDbRepository
      */
     public function getCategoryById(int $id): Category
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM category WHERE id = ?');
+        $stmt = $this->dbConnection->prepare('SELECT * FROM '.self::TABLE_NAME_CATEGORY.' WHERE id = ?');
         $stmt->execute(array($id));
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $category = new Category();
@@ -26,7 +28,7 @@ class CategoryRepository extends BaseDbRepository
      */
     public function getAllCategories(): array
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM category');
+        $stmt = $this->dbConnection->prepare('SELECT * FROM '.self::TABLE_NAME);
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $this->populateEntity($result);

@@ -12,7 +12,7 @@ class AdminPanelController extends AdminController
 
     public function indexAction()
     {
-        echo 'index';
+        return $this->getView()->render('adminPanel',[]);
     }
 
     public function showAction()

@@ -82,5 +82,8 @@ abstract class BaseModel
         return new \ReflectionClass($this);
     }
 
+    /**
+     * @return bool
+     */
     abstract protected function validate(): bool;
 }

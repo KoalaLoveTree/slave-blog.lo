@@ -15,6 +15,7 @@ class UserController extends Controller
     /**
      * @return string
      * @throws \ReflectionException
+     * @throws \core\FileNotFoundException
      */
     public function signInAction()
     {
@@ -80,6 +81,7 @@ class UserController extends Controller
     /**
      * @param string $message
      * @return string
+     * @throws \core\FileNotFoundException
      */
     protected function renderLogin($message = '')
     {
@@ -91,6 +93,7 @@ class UserController extends Controller
     /**
      * @param string $message
      * @return string
+     * @throws \core\FileNotFoundException
      */
     protected function renderRegistration($message = '')
     {

@@ -6,6 +6,8 @@ use db\entity\User;
 
 class UserRepository extends BaseDbRepository implements UserRepositoryInterface
 {
+    const TABLE_NAME_USER = 'user';
+
     /**
      * @param int $userId
      * @return \db\entity\Entity|User
@@ -13,7 +15,7 @@ class UserRepository extends BaseDbRepository implements UserRepositoryInterface
      */
     public function findUserById(int $userId): User
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM user WHERE id = ?');
+        $stmt = $this->dbConnection->prepare('SELECT * FROM '.self::TABLE_NAME_USER.' WHERE id = ?');
         $stmt->execute(array($userId));
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $user = new User();
@@ -27,7 +29,7 @@ class UserRepository extends BaseDbRepository implements UserRepositoryInterface
      */
     public function findUserByEmail(string $email)
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM user WHERE email = ?');
+        $stmt = $this->dbConnection->prepare('SELECT * FROM '.self::TABLE_NAME_USER.' WHERE email = ?');
         $stmt->execute(array($email));
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $user = new User();
@@ -51,7 +53,7 @@ class UserRepository extends BaseDbRepository implements UserRepositoryInterface
     public function createNewUser($login, $email, $password): bool
     {
         $stmt = $this->dbConnection->prepare(
-            'INSERT INTO user (login, password, email) VALUES (:login, :password, :email)');
+            'INSERT INTO '.self::TABLE_NAME_USER.' (login, password, email) VALUES (:login, :password, :email)');
         $stmt->bindParam(':login', $login);
         $stmt->bindParam(':password', password_hash($password, PASSWORD_DEFAULT));
         $stmt->bindParam(':email', $email);
