@@ -14,7 +14,7 @@ class Router
      * @param Route $route
      * @return mixed
      */
-    public function callAction(Route $route): mixed
+    public function callAction(Route $route)
     {
         try {
             /** @var string $controllerName */

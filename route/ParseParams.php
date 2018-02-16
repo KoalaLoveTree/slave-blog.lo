@@ -36,7 +36,7 @@ class ParseParams
      * @param string $name
      * @return mixed|null
      */
-    protected static function getParam(string $name): ?mixed
+    protected static function getParam(string $name)
     {
         return RequestHelper::getQueryString($name);
     }
