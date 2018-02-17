@@ -4,6 +4,7 @@ namespace repositories;
 
 
 use core\helper\AuthSessionHelper;
+use db\entity\Entity;
 use db\entity\Post;
 
 class PostRepository extends BaseDbRepository implements PostRepositoryInterface
@@ -15,7 +16,7 @@ class PostRepository extends BaseDbRepository implements PostRepositoryInterface
      */
     public function getPostsForHomePage(): array
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM '.self::TABLE_NAME_POST.' ORDER BY id DESC LIMIT 3');
+        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . self::TABLE_NAME_POST . ' ORDER BY id DESC LIMIT 3');
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $this->populateEntity($result);
@@ -28,7 +29,7 @@ class PostRepository extends BaseDbRepository implements PostRepositoryInterface
      */
     public function getPostById(int $id): Post
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM '.self::TABLE_NAME_POST.' WHERE id = ?');
+        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . self::TABLE_NAME_POST . ' WHERE id = ?');
         $stmt->execute(array($id));
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $post = new Post();
@@ -41,7 +42,7 @@ class PostRepository extends BaseDbRepository implements PostRepositoryInterface
      */
     public function getPostByCategory(int $categoryId): array
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM '.self::TABLE_NAME_POST.' WHERE categoryId = ?');
+        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . self::TABLE_NAME_POST . ' WHERE categoryId = ?');
         $stmt->execute(array($categoryId));
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $this->populateEntity($result);
@@ -53,7 +54,7 @@ class PostRepository extends BaseDbRepository implements PostRepositoryInterface
      */
     public function getPostsByAuthorId(int $authorId): ?array
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM '.self::TABLE_NAME_POST.' WHERE authorId = ?');
+        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . self::TABLE_NAME_POST . ' WHERE authorId = ?');
         $stmt->execute(array($authorId));
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $this->populateEntity($result);
@@ -68,7 +69,7 @@ class PostRepository extends BaseDbRepository implements PostRepositoryInterface
     public function createNewPost(string $title, int $categoryId, string $content)
     {
         $stmt = $this->dbConnection->prepare(
-            'INSERT INTO '.self::TABLE_NAME_POST.' (authorId, categoryId, title, content) VALUES (:authorId, :categoryId, :title, :content)');
+            'INSERT INTO ' . self::TABLE_NAME_POST . ' (authorId, categoryId, title, content) VALUES (:authorId, :categoryId, :title, :content)');
         $stmt->bindParam(':authorId', AuthSessionHelper::getId());
         $stmt->bindParam(':categoryId', $categoryId);
         $stmt->bindParam(':title', $title);
@@ -82,10 +83,31 @@ class PostRepository extends BaseDbRepository implements PostRepositoryInterface
      */
     public function getLastPostId(): int
     {
-        $stmt = $this->dbConnection->prepare('SELECT id FROM '.self::TABLE_NAME_POST.' ORDER BY id DESC LIMIT 1');
+        $stmt = $this->dbConnection->prepare('SELECT id FROM ' . self::TABLE_NAME_POST . ' ORDER BY id DESC LIMIT 1');
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $result[0]['id'];
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllPosts(): ?array
+    {
+        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . self::TABLE_NAME_POST);
+        $stmt->execute();
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $this->populateEntity($result);
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function deletePost(int $id): bool
+    {
+        $stmt = $this->dbConnection->prepare('UPDATE ' . self::TABLE_NAME_POST . ' SET status = ' . Post::STATUS_DELETED . ' WHERE id = ?');
+        return $stmt->execute(array($id));
     }
 
     public function getEntityClassName(): string

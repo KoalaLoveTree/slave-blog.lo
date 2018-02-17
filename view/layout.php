@@ -46,10 +46,10 @@ use core\helper\AuthSessionHelper;
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <?php if (AuthSessionHelper::isLoggedIn()): ?>
-                        <li><a href="http://slave-blog.lo/user/profile">Profile</a></li>
-                        <li><a href="http://slave-blog.lo/wall">Wall</a></li>
+                        <li><a href="/user/profile">Profile</a></li>
+                        <li><a href="/wall">Wall</a></li>
                     <?php endif ?>
-                    <li><a href="http://slave-blog.lo/category">Category</a></li>
+                    <li><a href="/category">Category</a></li>
                     <?php if (AuthSessionHelper::isAdmin()): ?>
                         <li><a href="http://slave-blog.lo/admin/adminPanel">Admin Panel</a></li>
                     <?php endif ?>
@@ -73,6 +73,15 @@ use core\helper\AuthSessionHelper;
         </div>
     <?php endif ?>
 </nav>
+
+<?php if (!\core\helper\ErrorsCheckHelper::checkForErrors()) : ?>
+    <script type="text/javascript">
+        alert(<?= \core\helper\ErrorsCheckHelper::getError()?>);
+    </script>
+    <?php
+    \core\helper\ErrorsCheckHelper::deleteError();
+endif;
+?>
 
 <div class="container-fluid">
     <?= $content ?>

@@ -5,7 +5,7 @@ namespace repositories;
 
 use db\entity\Category;
 
-class CategoryRepository extends BaseDbRepository
+class CategoryRepository extends BaseDbRepository implements CategoryRepositoryInterface
 {
     const TABLE_NAME_CATEGORY = 'category';
 
@@ -28,7 +28,7 @@ class CategoryRepository extends BaseDbRepository
      */
     public function getAllCategories(): array
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM '.self::TABLE_NAME);
+        $stmt = $this->dbConnection->prepare('SELECT * FROM '.self::TABLE_NAME_CATEGORY);
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $this->populateEntity($result);

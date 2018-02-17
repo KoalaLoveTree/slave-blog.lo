@@ -43,4 +43,9 @@ interface PostRepositoryInterface
      * @return int
      */
     public function getLastPostId(): int;
+
+    /**
+     * @return array
+     */
+    public function getAllPosts(): ?array;
 }

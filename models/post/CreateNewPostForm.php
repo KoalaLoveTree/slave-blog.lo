@@ -1,6 +1,6 @@
 <?php
 
-namespace models\User;
+namespace models\Post;
 
 use models\BaseModel;
 use repositories\PostRepositoryInterface;

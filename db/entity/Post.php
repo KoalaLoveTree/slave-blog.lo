@@ -2,6 +2,8 @@
 
 namespace db\entity;
 
+use repositories\RepositoryStorage;
+
 class Post implements Entity
 {
 
@@ -25,6 +27,14 @@ class Post implements Entity
     /**@var string* */
     private $pubdate;
 
+    /** @var User */
+    private $author;
+
+    /** @var Category */
+    private $category;
+
+    /** @var Comment[] */
+    private $comments;
 
     /**
      * @return int
@@ -122,5 +132,37 @@ class Post implements Entity
         $this->pubdate = $pubdate;
     }
 
+    /**
+     * @return User
+     */
+    public function getAuthor(): User
+    {
+        if ($this->author === null) {
+            $this->author = RepositoryStorage::getUserRepository()->findUserById($this->getAuthorId());
+        }
+        return $this->author;
+    }
 
+
+    /**
+     * @return Category
+     */
+    public function getCategory(): Category
+    {
+        if ($this->category === null) {
+            $this->category = RepositoryStorage::getCategoryRepository()->getCategoryById($this->getCategoryId());
+        }
+        return $this->category;
+    }
+
+    /**
+     * @return Comment[]
+     */
+    public function getComments(): array
+    {
+        if ($this->comments === null){
+            $this->comments = RepositoryStorage::getCommentRepository()->getCommentsByPostId($this->getId());
+        }
+        return $this->comments;
+    }
 }

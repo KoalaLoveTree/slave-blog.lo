@@ -27,7 +27,19 @@ interface CommentRepositoryInterface
      * @param int $postId
      * @param int $authorId
      * @param string $content
+     * @param int $status
      * @return bool|mixed
      */
-    public function createNewComment(int $postId, int $authorId, string $content);
+    public function createNewComment(int $postId, int $authorId, string $content, int $status);
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function approvedComment(int $id): bool;
+
+    /**
+     * @return array
+     */
+    public function getCommentsForModeration():array;
 }

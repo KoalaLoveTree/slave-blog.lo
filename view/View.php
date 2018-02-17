@@ -12,12 +12,12 @@ class View
 
 
     /**
-     * @param $name
-     * @param $args
+     * @param string $name
+     * @param array $args
      * @return string
      * @throws FileNotFoundException
      */
-    public function render($name, $args): string
+    public function render(string $name, array $args = []): string
     {
         $content = $this->renderView($name, $args);
         return $this->renderLayout($content);
@@ -82,6 +82,7 @@ class View
     {
         $real = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . $this->viewPath
             . DIRECTORY_SEPARATOR . $name . '.php');
+
         if (file_exists($real)) {
             return $real;
         } else {

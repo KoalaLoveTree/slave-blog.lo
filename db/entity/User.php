@@ -22,7 +22,6 @@ class User implements Entity
     /**@var string* */
     private $role;
 
-
     /**
      * @return int
      */

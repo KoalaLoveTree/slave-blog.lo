@@ -1,34 +1,34 @@
 <?php
 /** @var \db\entity\Post $post */
-/** @var \db\entity\User $author */
-/** @var \db\entity\Category $category */
-/** @var array $comments */
-/** @var array $authorsOfComments */
 ?>
 <div>
     <div class="container-fluid">
-        <?= $category->getTitle() ?><br>
-        <?= $author->getLogin() ?><br>
+        <?= $post->getCategory()->getTitle() ?><br>
+        <?= $post->getAuthor()->getLogin() ?><br>
         <?= $post->getTitle() ?><br>
         <?= $post->getContent() ?><br>
         <?= $post->getPubdate() ?><br>
     </div>
     <?php if (\core\helper\AuthSessionHelper::isLoggedIn()):?>
-<!--    action="/post/show/?id="--><?//=$post->getId()?>
-    <form class="form-comment"  method="post" role="form">
+    <form action="/comment/addcomment" class="form-comment" method="post" role="form">
         <h2 class="form-comment-heading">Add comment if u want</h2>
         <input type="text" name="comment" class="form-control" placeholder="Comment . . .">
+        <input type="hidden" name="postId" value="<?= $post->getId()?>">
         <button class="btn btn-lg btn-primary btn-block" name="show" type="submit">Add</button>
     </form>
     <?php endif ?>
     <ul class="list-group">
-        <?php foreach ($comments as $comment): ?>
-            <a class="list-group-item"><?= $comment->getContent() ?><br><?= $authorsOfComments[$comment->getId()]?></a>
-            <?php if (\core\helper\AuthSessionHelper::isAdmin()): ?>
-            <form class="form-delete-comment" method="post" role="form">
-                <button class="btn btn-lg btn-primary btn-block" name="id" type="submit" value=<?= $comment->getId()?>>Delete comment</button>
-            </form>
-            <?php endif ?>
+        <?php foreach ($post->getComments() as $comment): ?>
+        <a class="list-group-item"><?= $comment->getContent() ?>
+        <br><?= $comment->getAuthor()->getLogin() ?> <?= $comment->getPubtime() ?></a>
+        <?php if (\core\helper\AuthSessionHelper::isAdmin()): ?>
+        <form action="/comment/deletecomment" class="form-comment" method="post" role="form">
+            <input type="hidden" name="id" value="<?= $comment->getId()?>">
+            <input type="hidden" name="postId" value="<?= $comment->getId()?>">
+            <input type="hidden" name="path" value="0">
+            <button class="btn btn-lg btn-primary btn-block" name="show" type="submit">Delete comment</button>
+        </form>
+        <?php endif ?>
         <?php endforeach ?>
     </ul>
 </div>

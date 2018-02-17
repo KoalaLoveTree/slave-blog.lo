@@ -15,7 +15,7 @@ class UserRepository extends BaseDbRepository implements UserRepositoryInterface
      */
     public function findUserById(int $userId): User
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM '.self::TABLE_NAME_USER.' WHERE id = ?');
+        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . self::TABLE_NAME_USER . ' WHERE id = ?');
         $stmt->execute(array($userId));
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $user = new User();
@@ -29,7 +29,7 @@ class UserRepository extends BaseDbRepository implements UserRepositoryInterface
      */
     public function findUserByEmail(string $email)
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM '.self::TABLE_NAME_USER.' WHERE email = ?');
+        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . self::TABLE_NAME_USER . ' WHERE email = ?');
         $stmt->execute(array($email));
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $user = new User();
@@ -53,12 +53,34 @@ class UserRepository extends BaseDbRepository implements UserRepositoryInterface
     public function createNewUser($login, $email, $password): bool
     {
         $stmt = $this->dbConnection->prepare(
-            'INSERT INTO '.self::TABLE_NAME_USER.' (login, password, email) VALUES (:login, :password, :email)');
+            'INSERT INTO ' . self::TABLE_NAME_USER . ' (login, password, email) VALUES (:login, :password, :email)');
         $stmt->bindParam(':login', $login);
         $stmt->bindParam(':password', password_hash($password, PASSWORD_DEFAULT));
         $stmt->bindParam(':email', $email);
 
         return $stmt->execute();
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getAllUsers(): ?array
+    {
+        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . self::TABLE_NAME_USER);
+        $stmt->execute();
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $this->populateEntity($result);
+
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function deleteUser(int $id): bool
+    {
+        $stmt = $this->dbConnection->prepare('UPDATE ' . self::TABLE_NAME_USER . ' SET status = ' . User::STATUS_DELETED . ' WHERE id = ?');
+        return $stmt->execute(array($id));
     }
 
     public function getEntityClassName(): string

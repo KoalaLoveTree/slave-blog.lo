@@ -1,11 +1,11 @@
 <?php
-/** @var \db\entity\User $u */
+/** @var \db\entity\User $currentUser */
 /** @var array $usersPosts */
 ?>
 <div class="container-fluid">
-    Login: <?= $u->getLogin() ?>
+    Login: <?= $currentUser->getLogin() ?>
     <br>
-    Email: <?= $u->getEmail() ?>
+    Email: <?= $currentUser->getEmail() ?>
 </div>
 <ul class="list-group">
         <?php foreach ($usersPosts as $post) : ?>

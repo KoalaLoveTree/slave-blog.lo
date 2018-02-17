@@ -2,6 +2,8 @@
 
 namespace db\entity;
 
+use repositories\RepositoryStorage;
+
 class Comment implements Entity
 {
 
@@ -21,6 +23,12 @@ class Comment implements Entity
 
     /**@var string* */
     private $pubtime;
+
+    /** @var User */
+    private $author;
+
+    /** @var int */
+    private $status;
 
     /**
      * @return int
@@ -101,6 +109,34 @@ class Comment implements Entity
     {
         $this->pubtime = $pubtime;
     }
+
+    /**
+     * @return User
+     */
+    public function getAuthor(): User
+    {
+        if ($this->author === null) {
+            $this->author = RepositoryStorage::getUserRepository()->findUserById($this->authorId);
+        }
+        return $this->author;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatus(): int
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param int $status
+     */
+    public function setStatus(int $status): void
+    {
+        $this->status = $status;
+    }
+
 
 
 }

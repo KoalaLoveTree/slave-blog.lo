@@ -1,6 +1,9 @@
 <?php
-namespace models\post;
 
+namespace models\comment;
+
+use core\helper\AuthSessionHelper;
+use db\entity\Comment;
 use models\BaseModel;
 use repositories\CommentRepositoryInterface;
 
@@ -8,13 +11,11 @@ class AddCommentForm extends BaseModel
 {
     /** @var string */
     public $comment;
+    /** @var int */
+    public $postId;
 
     /** @var CommentRepositoryInterface */
     protected $commentRepository;
-    /** @var int */
-    protected $postId;
-    /** @var int */
-    protected $authorId;
 
     /**
      * AddCommentForm constructor.
@@ -26,22 +27,12 @@ class AddCommentForm extends BaseModel
     }
 
     /**
-     * @param int $postId
+     * @return int
      */
-    public function setPostId(int $postId): void
+    public function getPostId(): int
     {
-        $this->postId = $postId;
+        return $this->postId;
     }
-
-    /**
-     * @param int $authorId
-     */
-    public function setAuthorId(int $authorId): void
-    {
-        $this->authorId = $authorId;
-    }
-
-
 
     /**
      * @return bool
@@ -56,7 +47,7 @@ class AddCommentForm extends BaseModel
      */
     protected function isCommentNotEmpty(): bool
     {
-        if (empty($this->comment)){
+        if (empty($this->comment)) {
             $this->addError('Comment must be not empty');
             return false;
         }
@@ -66,8 +57,8 @@ class AddCommentForm extends BaseModel
     /**
      * @return bool
      */
-    public function createNewComment() :bool
+    public function createNewComment(): bool
     {
-        return $this->commentRepository->createNewComment($this->postId, $this->authorId, $this->comment);
+        return $this->commentRepository->createNewComment($this->postId, AuthSessionHelper::getId(), $this->comment, Comment::STATUS_MODERATION);
     }
 }

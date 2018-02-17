@@ -1,11 +1,7 @@
 <?php
-/** @var string $message */
 /** @var array $categories */
 ?>
 <div class="container">
-    <div class="text-center">
-        <?= $message ?><br>
-    </div>
     <form action="/user/createnewpost" method="post" role="presentation">
         <input type="text" name="title" class="form-control" placeholder="Post title">
         <p><select name="categoryId">

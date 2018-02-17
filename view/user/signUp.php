@@ -1,11 +1,6 @@
 <?php
-/** @var string $message */
 ?>
 <div class="container">
-    <div class="text-center">
-        <?= $message ?><br>
-    </div>
-
 
     <form class="form-signup" action="/user/signup" method="post" role="form">
         <h2 class="form-signup-heading">Please sign up</h2>

@@ -2,40 +2,26 @@
 
 namespace controllers;
 
-use repositories\CategoryRepository;
-use repositories\PostRepository;
-use route\ParseParams;
+use core\helper\RequestHelper;
+use repositories\RepositoryStorage;
 
 class CategoryController extends Controller
 {
     public function indexAction()
     {
-        $catRepo = $this->createCategoryRepository();
-        $categories = $catRepo->getAllCategories();
+        $categoryRepository = RepositoryStorage::getCategoryRepository();
 
         return $this->getView()->render('categories', [
-            'categories' => $categories,
+            'categories' => $categoryRepository->getAllCategories(),
         ]);
 
     }
 
     public function allPostsAction()
     {
-        $postRepo = $this->createPostRepository();
-        $id = (int)ParseParams::getParams(['0' => 'id'])['id'];
-        $categoryPosts = $postRepo->getPostByCategory($id);
+        $postRepository = RepositoryStorage::getPostRepository();
         return $this->getView()->render('categoryPosts', [
-            'posts' => $categoryPosts,
+            'posts' => $postRepository->getPostByCategory(RequestHelper::getQueryString('id')),
         ]);
-    }
-
-    protected function createPostRepository(): PostRepository
-    {
-        return new PostRepository();
-    }
-
-    protected function createCategoryRepository(): CategoryRepository
-    {
-        return new CategoryRepository();
     }
 }

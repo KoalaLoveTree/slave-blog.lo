@@ -4,10 +4,11 @@ namespace controllers;
 
 use core\helper\AuthSessionHelper;
 use models\User\AuthForm;
-use models\User\CreateNewPostForm;
+use models\Post\CreateNewPostForm;
 use models\User\RegistrationForm;
 use repositories\CategoryRepository;
 use repositories\PostRepository;
+use repositories\RepositoryStorage;
 use repositories\UserRepository;
 
 class UserController extends Controller
@@ -26,7 +27,7 @@ class UserController extends Controller
                 $this->redirect('/');
             }
 
-            return $this->renderLogin($authForm->getErrorString());
+            return $this->renderLogin();
         }
 
         return $this->renderLogin();
@@ -39,21 +40,19 @@ class UserController extends Controller
             if ($registrationForm->isValid() && $registrationForm->createNewUser() && $registrationForm->login()) {
                 $this->redirect('/');
             }
-            return $this->renderRegistration($registrationForm->getErrorString());
+            return $this->renderRegistration();
         }
         return $this->renderRegistration();
     }
 
     public function profileAction()
     {
-        $userRepo = $this->createUserRepository();
-        $postRepo = $this->createPostRepository();
+        $userRepository = RepositoryStorage::getUserRepository();
+        $postRepository = RepositoryStorage::getPostRepository();
         if (AuthSessionHelper::isLoggedIn()) {
-            $user = $userRepo->findUserById(AuthSessionHelper::getId());
-            $usersPosts = $postRepo->getPostsByAuthorId(AuthSessionHelper::getId());
             return $this->getView()->render('profile', [
-                'u' => $user,
-                'usersPosts' => $usersPosts,
+                'currentUser' => $userRepository->findUserById(AuthSessionHelper::getId()),
+                'usersPosts' => $postRepository->getPostsByAuthorId(AuthSessionHelper::getId()),
             ]);
         }
         die('Sign in please!');
@@ -66,7 +65,7 @@ class UserController extends Controller
             if ($createNewPostForm->isValid() && $createNewPostForm->createNewPost()) {
                 $this->redirect('/post/show/?id=' . $createNewPostForm->getNewPostId());
             }
-            return $this->renderCreateNewPost($createNewPostForm->getErrorString());
+            return $this->renderCreateNewPost();
         }
         return $this->renderCreateNewPost();
     }
@@ -79,36 +78,32 @@ class UserController extends Controller
     }
 
     /**
-     * @param string $message
      * @return string
      * @throws \core\FileNotFoundException
      */
-    protected function renderLogin($message = '')
+    protected function renderLogin()
     {
-        return $this->getView()->render('signIn', [
-            'message' => $message,
-        ]);
+        return $this->getView()->render('signIn');
     }
 
     /**
-     * @param string $message
      * @return string
      * @throws \core\FileNotFoundException
      */
-    protected function renderRegistration($message = '')
+    protected function renderRegistration()
     {
-        return $this->getView()->render('signUp', [
-            'message' => $message,
-        ]);
+        return $this->getView()->render('signUp');
     }
 
-    protected function renderCreateNewPost($message = '')
+    /**
+     * @return string
+     * @throws \core\FileNotFoundException
+     */
+    protected function renderCreateNewPost()
     {
-        $categoryRepo = $this->createCategoryRepository();
-        $categories = $categoryRepo->getAllCategories();
+        $categoryRepository = RepositoryStorage::getCategoryRepository();
         return $this->getView()->render('createNewPost', [
-            'message' => $message,
-            'categories' => $categories,
+            'categories' => $categoryRepository->getAllCategories(),
         ]);
     }
 
@@ -118,7 +113,7 @@ class UserController extends Controller
     protected function createAuthForm()
     {
         return new AuthForm(
-            $this->createUserRepository()
+            RepositoryStorage::getUserRepository()
         );
     }
 
@@ -128,32 +123,14 @@ class UserController extends Controller
     protected function createRegistrationForm()
     {
         return new RegistrationForm(
-            $this->createUserRepository()
+            RepositoryStorage::getUserRepository()
         );
     }
 
     protected function createCreateNewPostForm()
     {
         return new CreateNewPostForm(
-            $this->createPostRepository()
+            RepositoryStorage::getPostRepository()
         );
-    }
-
-    /**
-     * @return UserRepository
-     */
-    protected function createUserRepository(): UserRepository
-    {
-        return new UserRepository();
-    }
-
-    protected function createPostRepository(): PostRepository
-    {
-        return new PostRepository();
-    }
-
-    protected function createCategoryRepository(): CategoryRepository
-    {
-        return new CategoryRepository();
     }
 }

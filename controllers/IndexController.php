@@ -2,29 +2,18 @@
 
 namespace controllers;
 
-use repositories\PostRepository;
+use repositories\RepositoryStorage;
 
 class IndexController extends Controller
 {
 
     public function indexAction()
     {
-        $postRepo = $this->createPostRepository();
-        $data = $postRepo->getPostsForHomePage();
+        $postRepository = RepositoryStorage::getPostRepository();
 
         return $this->getView()->render('index', [
-            'first' => $data[0],
-            'second' => $data[1],
-            'third' => $data[2],
+            'posts' => $postRepository->getPostsForHomePage(),
         ]);
     }
 
-
-    /**
-     * @return PostRepository
-     */
-    protected function createPostRepository(): PostRepository
-    {
-        return new PostRepository();
-    }
 }

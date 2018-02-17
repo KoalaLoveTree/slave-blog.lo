@@ -2,6 +2,7 @@
 
 namespace models;
 
+use core\helper\ErrorsCheckHelper;
 use core\helper\RequestHelper;
 
 abstract class BaseModel
@@ -34,28 +35,8 @@ abstract class BaseModel
      */
     protected function addError($message)
     {
-        $this->errors[] = $message;
+        ErrorsCheckHelper::setError($message);
     }
-
-    public function getErrors()
-    {
-        return $this->errors;
-    }
-
-    /**
-     * @return string
-     */
-    public function getErrorString(): string
-    {
-        $string = '';
-
-        foreach ($this->getErrors() as $error) {
-            $string .= $error . PHP_EOL;
-        }
-
-        return $string;
-    }
-
     /**
      * @return bool
      */

@@ -4,21 +4,16 @@ namespace controllers;
 
 use core\helper\AuthSessionHelper;
 use repositories\PostRepository;
+use repositories\RepositoryStorage;
 
 class WallController extends Controller
 {
     public function indexAction()
     {
-        $postRepo = $this->createPostRepository();
-        $posts = $postRepo->getPostsByAuthorId(AuthSessionHelper::getId());
+        $postRepository = RepositoryStorage::getPostRepository();
         return $this->getView()->render('wall', [
-            'posts' => $posts
+            'posts' => $postRepository->getPostsByAuthorId(AuthSessionHelper::getId()),
         ]);
 
-    }
-
-    protected function createPostRepository()
-    {
-        return new PostRepository();
     }
 }

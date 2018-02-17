@@ -26,4 +26,9 @@ interface UserRepositoryInterface
      * @return bool
      */
     public function createNewUser($login, $email, $password): bool;
+
+    /**
+     * @return array|null
+     */
+    public function getAllUsers(): ?array;
 }

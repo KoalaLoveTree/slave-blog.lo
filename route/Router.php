@@ -4,7 +4,6 @@ namespace route;
 
 use controllers\Controller;
 use core\FileNotFoundException;
-use core\PermissionDeniedException;
 use view\View;
 
 class Router
@@ -43,7 +42,7 @@ class Router
             http_response_code(404);
             var_dump($route->getPath());
             var_dump($controllerName);
-            die('Page not found');
+            die('Page not found "'.$e->getMessage().'"');
         }
     }
 

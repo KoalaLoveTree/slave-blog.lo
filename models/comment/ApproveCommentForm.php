@@ -1,41 +1,44 @@
 <?php
 
-namespace models\post;
+
+namespace models\comment;
 
 
 use models\BaseModel;
 use repositories\CommentRepositoryInterface;
 
-class DeleteCommentForm extends BaseModel
+class ApproveCommentForm extends BaseModel
 {
-    /** @var int */
+
+    /** @var int  */
     public $id;
+
     /** @var CommentRepositoryInterface */
     protected $commentRepository;
 
+    /**
+     * ApproveCommentForm constructor.
+     * @param CommentRepositoryInterface $commentRepository
+     */
     public function __construct(CommentRepositoryInterface $commentRepository)
     {
         $this->commentRepository = $commentRepository;
     }
+
 
     /**
      * @return bool
      */
     protected function validate(): bool
     {
-        return $this->ifCommentExist();
+        return true;
     }
 
     /**
      * @return bool
      */
-    protected function ifCommentExist():bool
+    public function approveComment():bool
     {
-        return $this->commentRepository->findCommentById($this->id);
-    }
-
-    public function deleteComment():bool
-    {
-        return $this->commentRepository->deleteComment($this->id);
+        return $this->commentRepository->approvedComment($this->id);
     }
 }

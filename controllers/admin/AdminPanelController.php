@@ -3,6 +3,8 @@
 namespace controllers\admin;
 
 
+use repositories\RepositoryStorage;
+
 class AdminPanelController extends AdminController
 {
     public function __construct()
@@ -12,11 +14,14 @@ class AdminPanelController extends AdminController
 
     public function indexAction()
     {
-        return $this->getView()->render('adminPanel',[]);
+        $commentRepository = RepositoryStorage::getCommentRepository();
+        return $this->getView()->render('admin',[
+            'comments' => $commentRepository->getCommentsForModeration(),
+            ]);
     }
 
-    public function showAction()
+    public function deletePostAction()
     {
-        echo 'show';
+
     }
 }
