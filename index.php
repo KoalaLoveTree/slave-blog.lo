@@ -8,7 +8,6 @@ spl_autoload_register(function ($class) {
     }
 });
 
-
 use route\Router;
 use route\StandardParser;
 
@@ -20,6 +19,7 @@ $conf = require 'core\config.php';
 \core\App::setDbm(new \db\MySQLDBManager($conf['db']));
 
 session_start();
+var_dump(getallheaders());
 
 $router = new Router();
 echo $router->callAction(StandardParser::parseUrl($url));
