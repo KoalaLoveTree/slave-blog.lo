@@ -4,13 +4,32 @@ namespace response;
 
 interface ResponseInterface
 {
-
-    public function sendHeaders();
+    public function addHeaders();
 
     /**
-     * @param string $header
+     * @param array $headers
      */
-    public function sendHeader(string $header);
+    public function setHeaders(array $headers);
 
-    public function send(): void;
+    /**
+     * @return array
+     */
+    public function getHeaders(): array ;
+
+    /**
+     * @param string $content
+     */
+    public function setContent(string $content);
+
+    /**
+     * @return string
+     */
+    public function getContent(): string;
+
+    /**
+     * @return int
+     */
+    public function getStatusCode(): int;
+
 }
+

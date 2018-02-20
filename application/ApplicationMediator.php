@@ -2,6 +2,7 @@
 
 namespace application;
 
+use core\helper\ErrorsCheckHelper;
 use response\ResponseInterface;
 use route\Router;
 use route\StandardParser;
@@ -20,7 +21,14 @@ class ApplicationMediator implements MediatorInterface
      */
     public function sendResponse(ResponseInterface $response)
     {
-        $response->send();
+        http_response_code($response->getStatusCode());
+//        if ($response->getStatusCode() !== 200) {
+//            $response->addHeaders();
+//            die($response->getContent());
+//        }
+        var_dump(ErrorsCheckHelper::getError());
+        $response->addHeaders();
+        echo $response->getContent();
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace controllers;
 
 use repositories\RepositoryStorage;
+use response\SuccessResponse;
 
 class IndexController extends Controller
 {
@@ -11,9 +12,9 @@ class IndexController extends Controller
     {
         $postRepository = RepositoryStorage::getPostRepository();
 
-        return $this->getView()->render('index', [
+        return new SuccessResponse($this->getView()->render('index', [
             'posts' => $postRepository->getPostsForHomePage(),
-        ]);
+        ]));
     }
 
 }

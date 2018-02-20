@@ -4,11 +4,11 @@
 namespace response;
 
 
-class SuccessResponse implements ResponseInterface
+class UnauthorizedResponse implements ResponseInterface
 {
 
     /** @var int */
-    protected $statusCode = 200;
+    protected $statusCode = 401;
     /** @var string */
     protected $content;
 
@@ -71,15 +71,9 @@ class SuccessResponse implements ResponseInterface
     {
         if (!empty($this->headers)) {
             foreach ($this->headers as $header) {
-                $this->addHeader($header);
+                header($header);
             }
-            return;
         }
         return;
-    }
-
-    protected function addHeader(string $header)
-    {
-        header($header);
     }
 }

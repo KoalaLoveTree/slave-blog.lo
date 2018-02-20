@@ -4,6 +4,7 @@ namespace controllers;
 
 use core\helper\RequestHelper;
 use repositories\RepositoryStorage;
+use response\SuccessResponse;
 
 class CategoryController extends Controller
 {
@@ -11,17 +12,17 @@ class CategoryController extends Controller
     {
         $categoryRepository = RepositoryStorage::getCategoryRepository();
 
-        return $this->getView()->render('categories', [
+        return new SuccessResponse($this->getView()->render('categories', [
             'categories' => $categoryRepository->getAllCategories(),
-        ]);
+        ]));
 
     }
 
     public function allPostsAction()
     {
         $postRepository = RepositoryStorage::getPostRepository();
-        return $this->getView()->render('categoryPosts', [
+        return new SuccessResponse($this->getView()->render('categoryPosts', [
             'posts' => $postRepository->getPostByCategory(RequestHelper::getQueryString('id')),
-        ]);
+        ]));
     }
 }

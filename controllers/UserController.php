@@ -3,18 +3,19 @@
 namespace controllers;
 
 use core\helper\AuthSessionHelper;
+use core\helper\ErrorsCheckHelper;
 use models\User\AuthForm;
 use models\Post\CreateNewPostForm;
 use models\User\RegistrationForm;
-use repositories\CategoryRepository;
-use repositories\PostRepository;
 use repositories\RepositoryStorage;
-use repositories\UserRepository;
+use response\ResponseInterface;
+use response\SuccessResponse;
+use response\UnauthorizedResponse;
 
 class UserController extends Controller
 {
     /**
-     * @return string
+     * @return ResponseInterface
      * @throws \ReflectionException
      * @throws \core\FileNotFoundException
      */
@@ -24,9 +25,9 @@ class UserController extends Controller
 
         if ($authForm->load()) {
             if ($authForm->isValid() && $authForm->login()) {
-                $this->redirect('/');
+                return new SuccessResponse('Welcome!',['Location: /',]);
             }
-
+            ErrorsCheckHelper::setError('Wrong login or password');
             return $this->renderLogin();
         }
 
@@ -50,12 +51,12 @@ class UserController extends Controller
         $userRepository = RepositoryStorage::getUserRepository();
         $postRepository = RepositoryStorage::getPostRepository();
         if (AuthSessionHelper::isLoggedIn()) {
-            return $this->getView()->render('profile', [
+            return new SuccessResponse($this->getView()->render('profile', [
                 'currentUser' => $userRepository->findUserById(AuthSessionHelper::getId()),
                 'usersPosts' => $postRepository->getPostsByAuthorId(AuthSessionHelper::getId()),
-            ]);
+            ]));
         }
-        die('Sign in please!');
+        return new UnauthorizedResponse('Sign up please!');
     }
 
     public function createNewPostAction()
@@ -78,21 +79,21 @@ class UserController extends Controller
     }
 
     /**
-     * @return string
+     * @return SuccessResponse
      * @throws \core\FileNotFoundException
      */
     protected function renderLogin()
     {
-        return $this->getView()->render('signIn');
+        return new SuccessResponse($this->getView()->render('signIn'));
     }
 
     /**
-     * @return string
+     * @return SuccessResponse
      * @throws \core\FileNotFoundException
      */
     protected function renderRegistration()
     {
-        return $this->getView()->render('signUp');
+        return new SuccessResponse($this->getView()->render('signUp'));
     }
 
     /**
@@ -102,9 +103,9 @@ class UserController extends Controller
     protected function renderCreateNewPost()
     {
         $categoryRepository = RepositoryStorage::getCategoryRepository();
-        return $this->getView()->render('createNewPost', [
+        return new SuccessResponse($this->getView()->render('createNewPost', [
             'categories' => $categoryRepository->getAllCategories(),
-        ]);
+        ]));
     }
 
     /**

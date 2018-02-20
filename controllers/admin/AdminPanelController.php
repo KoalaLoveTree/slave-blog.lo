@@ -4,6 +4,7 @@ namespace controllers\admin;
 
 
 use repositories\RepositoryStorage;
+use response\SuccessResponse;
 
 class AdminPanelController extends AdminController
 {
@@ -15,13 +16,8 @@ class AdminPanelController extends AdminController
     public function indexAction()
     {
         $commentRepository = RepositoryStorage::getCommentRepository();
-        return $this->getView()->render('admin',[
+        return new SuccessResponse($this->getView()->render('admin', [
             'comments' => $commentRepository->getCommentsForModeration(),
-            ]);
-    }
-
-    public function deletePostAction()
-    {
-
+        ]));
     }
 }

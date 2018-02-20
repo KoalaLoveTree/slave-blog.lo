@@ -4,6 +4,7 @@ namespace route;
 
 use controllers\Controller;
 use core\FileNotFoundException;
+use response\NotFoundResponse;
 use view\View;
 
 class Router
@@ -39,10 +40,7 @@ class Router
             }
             throw new FileNotFoundException();
         } catch (FileNotFoundException $e) {
-            http_response_code(404);
-            var_dump($route->getPath());
-            var_dump($controllerName);
-            die('Page not found "'.$e->getMessage().'"');
+            return new NotFoundResponse('Page not found "' . $e->getMessage().'"');
         }
     }
 

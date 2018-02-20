@@ -24,7 +24,7 @@
         <?php if (\core\helper\AuthSessionHelper::isAdmin()): ?>
         <form action="/comment/deletecomment" class="form-comment" method="post" role="form">
             <input type="hidden" name="id" value="<?= $comment->getId()?>">
-            <input type="hidden" name="postId" value="<?= $comment->getId()?>">
+            <input type="hidden" name="postId" value="<?= $comment->getPostId()?>">
             <input type="hidden" name="path" value="0">
             <button class="btn btn-lg btn-primary btn-block" name="show" type="submit">Delete comment</button>
         </form>

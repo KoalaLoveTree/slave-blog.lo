@@ -19,7 +19,6 @@ $conf = require 'core\config.php';
 \core\App::setDbm(new \db\MySQLDBManager($conf['db']));
 
 session_start();
-var_dump(getallheaders());
 
-$router = new Router();
-echo $router->callAction(StandardParser::parseUrl($url));
+$application = new \application\ApplicationMediator();
+$application->run($url);

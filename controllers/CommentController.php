@@ -3,6 +3,7 @@
 
 namespace controllers;
 
+use core\helper\ErrorsCheckHelper;
 use models\comment\AddCommentForm;
 use models\comment\ApproveCommentForm;
 use models\comment\DeleteCommentForm;
@@ -16,9 +17,9 @@ class CommentController extends Controller
         if ($commentForm->load()) {
             if ($commentForm->isValid() && $commentForm->createNewComment()) {
                $this->redirect('/post/show/?id=' . $commentForm->getPostId());
-               return;
             }
         }
+        ErrorsCheckHelper::setError('Comment must be not empty!');
     }
 
     public function deleteCommentAction()
@@ -28,7 +29,6 @@ class CommentController extends Controller
             $path = $commentDeleteForm->getPath();
             if ($commentDeleteForm->isValid() && $commentDeleteForm->deleteComment()) {
                 $this->redirect($path);
-                return;
             }
         }
     }
@@ -39,7 +39,6 @@ class CommentController extends Controller
      if ($approveCommentForm->load()){
          if ($approveCommentForm->isValid() && $approveCommentForm->approveComment()) {
              $this->redirect('/admin/adminPanel');
-             return;
          }
      }
     }
