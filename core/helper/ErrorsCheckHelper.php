@@ -6,7 +6,7 @@ namespace core\helper;
 
 class ErrorsCheckHelper
 {
-    const ERROR = 'error';
+    const ERRORS = 'errors';
 
     public static function setError(string $error)
     {
@@ -14,22 +14,24 @@ class ErrorsCheckHelper
     }
 
     /**
-     * @return null|string
+     * @return array|null
      */
-    public static function getError(): ?string
+    public static function getErrors(): ?array
     {
-        return self::getErrorFromSession();
+        $errors = self::getErrorFromSession();
+        self::deleteErrors();
+        return $errors;
     }
 
     /**
      * @return bool
      */
-    public static function checkForErrors(): bool
+    public static function isErrorsExist(): bool
     {
         if (!empty(self::getErrorFromSession())){
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
@@ -37,13 +39,13 @@ class ErrorsCheckHelper
      */
     protected static function writeErrorToSession($value)
     {
-        $_SESSION[self::ERROR] = $value;
+        $_SESSION[self::ERRORS][] = $value;
     }
 
-    public static function deleteError()
+    protected static function deleteErrors()
     {
         if (!empty(self::getErrorFromSession())){
-            unset($_SESSION[self::ERROR]);
+            unset($_SESSION[self::ERRORS]);
         }
     }
 
@@ -52,6 +54,6 @@ class ErrorsCheckHelper
      */
     protected static function getErrorFromSession()
     {
-        return $_SESSION[self::ERROR];
+        return $_SESSION[self::ERRORS];
     }
 }

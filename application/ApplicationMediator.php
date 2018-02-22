@@ -22,12 +22,11 @@ class ApplicationMediator implements MediatorInterface
     public function sendResponse(ResponseInterface $response)
     {
         http_response_code($response->getStatusCode());
-//        if ($response->getStatusCode() !== 200) {
-//            $response->addHeaders();
-//            die($response->getContent());
-//        }
-        var_dump(ErrorsCheckHelper::getError());
-        $response->addHeaders();
+        if (!empty($response->getHeaders())) {
+            foreach ($response->getHeaders() as $header) {
+                header($header);
+            }
+        }
         echo $response->getContent();
     }
 

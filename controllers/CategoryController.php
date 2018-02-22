@@ -11,18 +11,21 @@ class CategoryController extends Controller
     public function indexAction()
     {
         $categoryRepository = RepositoryStorage::getCategoryRepository();
-
-        return new SuccessResponse($this->getView()->render('categories', [
+        $response = new SuccessResponse();
+        $response->setContent($this->getView()->render('categories', [
             'categories' => $categoryRepository->getAllCategories(),
         ]));
+        return $response;
 
     }
 
     public function allPostsAction()
     {
         $postRepository = RepositoryStorage::getPostRepository();
-        return new SuccessResponse($this->getView()->render('categoryPosts', [
+        $response = new SuccessResponse();
+        $response->setContent($this->getView()->render('categoryPosts', [
             'posts' => $postRepository->getPostByCategory(RequestHelper::getQueryString('id')),
         ]));
+        return $response;
     }
 }

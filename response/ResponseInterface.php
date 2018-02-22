@@ -4,17 +4,17 @@ namespace response;
 
 interface ResponseInterface
 {
-    public function addHeaders();
+
+    const SUCCESS_STATUS_CODE = 200;
+    const NOT_FOUND_STATUS_CODE = 404;
+    const FORBIDDEN_STATUS_CODE = 403;
+    const UNAUTHORIZED_STATUS_CODE = 401;
+    const FOUND_STATUS_CODE = 302;
 
     /**
-     * @param array $headers
+     * @param string $header
      */
-    public function setHeaders(array $headers);
-
-    /**
-     * @return array
-     */
-    public function getHeaders(): array ;
+    public function addHeader(string $header);
 
     /**
      * @param string $content
@@ -24,12 +24,16 @@ interface ResponseInterface
     /**
      * @return string
      */
-    public function getContent(): string;
+    public function getContent(): ?string;
 
     /**
      * @return int
      */
     public function getStatusCode(): int;
 
+    /**
+     * @return array
+     */
+    public function getHeaders(): ?array;
 }
 

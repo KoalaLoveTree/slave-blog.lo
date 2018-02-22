@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use response\RedirectResponse;
 use view\View;
 
 class Controller
@@ -27,7 +28,9 @@ class Controller
 
     protected function redirect($path)
     {
-        header('Location: ' . $path);
+        $response = new RedirectResponse();
+        $response->addHeader('Location: ' . $path);
+        return $response;
     }
 
     /**

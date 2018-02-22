@@ -12,8 +12,10 @@ class PostController extends Controller
     public function showAction()
     {
         $postRepository = RepositoryStorage::getPostRepository();
-        return new SuccessResponse($this->getView()->render('post', [
+        $response = new SuccessResponse();
+        $response->setContent($this->getView()->render('post', [
             'post' => $postRepository->getPostById(RequestHelper::getQueryString('id')),
         ]));
+        return $response;
     }
 }

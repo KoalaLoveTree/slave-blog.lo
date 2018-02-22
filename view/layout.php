@@ -74,14 +74,13 @@ use core\helper\AuthSessionHelper;
     <?php endif ?>
 </nav>
 
-<?php if (!\core\helper\ErrorsCheckHelper::checkForErrors()) : ?>
-    <script type="text/javascript">
-        alert(<?= \core\helper\ErrorsCheckHelper::getError()?>);
-    </script>
-    <?php
-    \core\helper\ErrorsCheckHelper::deleteError();
-endif;
-?>
+<?php if (\core\helper\ErrorsCheckHelper::isErrorsExist()) : ?>
+    <?php foreach (\core\helper\ErrorsCheckHelper::getErrors() as $error): ?>
+        <script type="text/javascript">
+            alert('<?=$error?>');
+        </script>
+    <?php endforeach ?>
+<?php endif ?>
 
 <div class="container-fluid">
     <?= $content ?>

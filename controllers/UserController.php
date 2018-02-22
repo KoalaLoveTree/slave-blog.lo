@@ -25,10 +25,8 @@ class UserController extends Controller
 
         if ($authForm->load()) {
             if ($authForm->isValid() && $authForm->login()) {
-                return new SuccessResponse('Welcome!',['Location: /',]);
+                return $this->redirect('/');
             }
-            ErrorsCheckHelper::setError('Wrong login or password');
-            return $this->renderLogin();
         }
 
         return $this->renderLogin();
@@ -39,7 +37,7 @@ class UserController extends Controller
         $registrationForm = $this->createRegistrationForm();
         if ($registrationForm->load()) {
             if ($registrationForm->isValid() && $registrationForm->createNewUser() && $registrationForm->login()) {
-                $this->redirect('/');
+               return $this->redirect('/');
             }
             return $this->renderRegistration();
         }
@@ -51,12 +49,15 @@ class UserController extends Controller
         $userRepository = RepositoryStorage::getUserRepository();
         $postRepository = RepositoryStorage::getPostRepository();
         if (AuthSessionHelper::isLoggedIn()) {
-            return new SuccessResponse($this->getView()->render('profile', [
+            $response = new SuccessResponse();
+            $response->setContent($this->getView()->render('profile', [
                 'currentUser' => $userRepository->findUserById(AuthSessionHelper::getId()),
                 'usersPosts' => $postRepository->getPostsByAuthorId(AuthSessionHelper::getId()),
             ]));
+            return $response;
         }
-        return new UnauthorizedResponse('Sign up please!');
+        ErrorsCheckHelper::setError('Sign ip please');
+        return new UnauthorizedResponse();
     }
 
     public function createNewPostAction()
@@ -75,7 +76,7 @@ class UserController extends Controller
     {
         AuthSessionHelper::logOut();
 
-        $this->redirect('/');
+        return $this->redirect('/');
     }
 
     /**
@@ -84,7 +85,9 @@ class UserController extends Controller
      */
     protected function renderLogin()
     {
-        return new SuccessResponse($this->getView()->render('signIn'));
+        $response = new SuccessResponse();
+        $response->setContent($this->getView()->render('signIn'));
+        return $response;
     }
 
     /**
@@ -93,7 +96,9 @@ class UserController extends Controller
      */
     protected function renderRegistration()
     {
-        return new SuccessResponse($this->getView()->render('signUp'));
+        $response = new SuccessResponse();
+        $response->setContent($this->getView()->render('signUp'));
+        return $response;
     }
 
     /**
@@ -103,9 +108,11 @@ class UserController extends Controller
     protected function renderCreateNewPost()
     {
         $categoryRepository = RepositoryStorage::getCategoryRepository();
-        return new SuccessResponse($this->getView()->render('createNewPost', [
+        $response = new SuccessResponse();
+        $response->setContent($this->getView()->render('createNewPost', [
             'categories' => $categoryRepository->getAllCategories(),
         ]));
+        return $response;
     }
 
     /**

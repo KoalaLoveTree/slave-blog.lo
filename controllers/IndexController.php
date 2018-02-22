@@ -11,10 +11,11 @@ class IndexController extends Controller
     public function indexAction()
     {
         $postRepository = RepositoryStorage::getPostRepository();
-
-        return new SuccessResponse($this->getView()->render('index', [
+        $response = new SuccessResponse();
+        $response->setContent($this->getView()->render('index', [
             'posts' => $postRepository->getPostsForHomePage(),
         ]));
+        return $response;
     }
 
 }

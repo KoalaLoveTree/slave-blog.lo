@@ -7,37 +7,22 @@ namespace response;
 class SuccessResponse implements ResponseInterface
 {
 
-    /** @var int */
-    protected $statusCode = 200;
     /** @var string */
     protected $content;
-
     /** @var array */
     protected $headers;
-
     /**
-     * SuccessResponse constructor.
-     * @param $headers
-     * @param $content
+     * @return array|null
      */
-    public function __construct(string $content, array $headers = array())
-    {
-        $this->headers = $headers;
-        $this->content = $content;
-    }
-
-    /**
-     * @return array
-     */
-    public function getHeaders(): array
+    public function getHeaders(): ?array
     {
         return $this->headers;
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getContent(): string
+    public function getContent(): ?string
     {
         return $this->content;
     }
@@ -55,31 +40,14 @@ class SuccessResponse implements ResponseInterface
      */
     public function getStatusCode(): int
     {
-        return $this->statusCode;
+        return self::SUCCESS_STATUS_CODE;
     }
-
 
     /**
-     * @param array $headers
+     * @param string $header
      */
-    public function setHeaders(array $headers)
+    public function addHeader(string $header)
     {
-        array_merge($this->headers, [$headers]);
-    }
-
-    public function addHeaders()
-    {
-        if (!empty($this->headers)) {
-            foreach ($this->headers as $header) {
-                $this->addHeader($header);
-            }
-            return;
-        }
-        return;
-    }
-
-    protected function addHeader(string $header)
-    {
-        header($header);
+        $this->headers[] = $header;
     }
 }
