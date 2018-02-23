@@ -34,15 +34,12 @@ class StandardParser implements RouteParser
     protected static function parse(array $url): array
     {
         array_shift($url);
-        if (empty($url)) {
-            return [
-                'path' => 'controllers',
-                'controller' => 'index',
-                'action' => 'index',
-            ];
-        }
         $controllerAndPath = self::identifyControllerName($url);
-        $action = self::identifyActionName($url, $controllerAndPath);
+        if ($controllerAndPath['controller']!=='notFound') {
+            $action = self::identifyActionName($url, $controllerAndPath);
+        }else{
+            $action = 'notFound';
+        }
         return [
             'path' => $controllerAndPath['path'],
             'controller' => $controllerAndPath['controller'],
@@ -68,8 +65,8 @@ class StandardParser implements RouteParser
             }
         }
         return [
-            'path' => 'controllers',
-            'controller' => 'index',
+            'path' => 'notFound',
+            'controller' => 'notFound',
         ];
     }
 

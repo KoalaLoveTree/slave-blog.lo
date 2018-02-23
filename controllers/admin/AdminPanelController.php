@@ -16,8 +16,10 @@ class AdminPanelController extends AdminController
     public function indexAction()
     {
         $commentRepository = RepositoryStorage::getCommentRepository();
-        return new SuccessResponse($this->getView()->render('admin', [
+        $response = new SuccessResponse();
+        $response->setContent($this->getView()->render('admin', [
             'comments' => $commentRepository->getCommentsForModeration(),
         ]));
+        return $response;
     }
 }

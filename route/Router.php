@@ -5,6 +5,7 @@ namespace route;
 use controllers\Controller;
 use core\FileNotFoundException;
 use response\NotFoundResponse;
+use response\ResponseInterface;
 use view\View;
 
 class Router
@@ -12,7 +13,7 @@ class Router
 
     /**
      * @param Route $route
-     * @return mixed
+     * @return ResponseInterface
      */
     public function callAction(Route $route)
     {
@@ -40,7 +41,9 @@ class Router
             }
             throw new FileNotFoundException();
         } catch (FileNotFoundException $e) {
-            return new NotFoundResponse('Page not found "' . $e->getMessage().'"');
+            $response = new NotFoundResponse();
+            $response->setContent('Page not found "' . $e->getMessage().'"');
+            return $response;
         }
     }
 

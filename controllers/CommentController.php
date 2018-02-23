@@ -16,7 +16,7 @@ class CommentController extends Controller
         $commentForm = $this->createAddCommentForm();
         if ($commentForm->load()) {
             if ($commentForm->isValid() && $commentForm->createNewComment()) {
-               $this->redirect('/post/show/?id=' . $commentForm->getPostId());
+                return $this->redirect('/post/show/?id=' . $commentForm->getPostId());
             }
         }
         ErrorsCheckHelper::setError('Comment must be not empty!');
@@ -28,7 +28,7 @@ class CommentController extends Controller
         if ($commentDeleteForm->load()) {
             $path = $commentDeleteForm->getPath();
             if ($commentDeleteForm->isValid() && $commentDeleteForm->deleteComment()) {
-                $this->redirect($path);
+                return $this->redirect($path);
             }
         }
     }
@@ -38,7 +38,7 @@ class CommentController extends Controller
      $approveCommentForm = $this->createApproveCommentForm();
      if ($approveCommentForm->load()){
          if ($approveCommentForm->isValid() && $approveCommentForm->approveComment()) {
-             $this->redirect('/admin/adminPanel');
+             return $this->redirect('/admin/adminPanel');
          }
      }
     }

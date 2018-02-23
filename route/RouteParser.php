@@ -5,5 +5,9 @@ namespace route;
 
 interface RouteParser
 {
-    public static function parseUrl($original_route);
+    /**
+     * @param $original_route
+     * @return Route
+     */
+    public static function parseUrl($original_route):Route;
 }

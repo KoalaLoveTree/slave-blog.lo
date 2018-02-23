@@ -65,7 +65,7 @@ class UserController extends Controller
         $createNewPostForm = $this->createCreateNewPostForm();
         if ($createNewPostForm->load()) {
             if ($createNewPostForm->isValid() && $createNewPostForm->createNewPost()) {
-                $this->redirect('/post/show/?id=' . $createNewPostForm->getNewPostId());
+                return $this->redirect('/post/show/?id=' . $createNewPostForm->getNewPostId());
             }
             return $this->renderCreateNewPost();
         }
