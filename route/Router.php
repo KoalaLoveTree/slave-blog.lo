@@ -55,7 +55,7 @@ class Router
     protected function getControllerName($path, $controller): string
     {
         if ($this->isControllerHavePath($path)) {
-            return $path . DIRECTORY_SEPARATOR .
+            return $path . '\\' .
                 ucfirst($controller) . 'Controller';
         } else {
             return ucfirst($controller) . 'Controller';
