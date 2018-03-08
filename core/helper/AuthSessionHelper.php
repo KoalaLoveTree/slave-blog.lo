@@ -9,8 +9,7 @@ class AuthSessionHelper
     const KEY_AUTH = 'AUTH';
     const KEY_STATUS = 'STATUS';
     const ROLE_ADMIN = 'admin';
-    const ROLE_USER = 'admin';
-    const ROLE_MODERATOR = 'moderator';
+    const ROLE_USER = 'user';
     const ROLE_GUEST = 'guest';
 
     /**
@@ -60,18 +59,18 @@ class AuthSessionHelper
     /**
      * @return bool
      */
+    public static function isGuest(): bool
+    {
+        return self::isRole(self::ROLE_GUEST);
+    }
+    /**
+     * @return bool
+     */
     public static function isAdmin(): bool
     {
         return self::isRole(self::ROLE_ADMIN);
     }
 
-    /**
-     * @return bool
-     */
-    public static function isModer(): bool
-    {
-        return self::isRole(self::ROLE_MODERATOR);
-    }
 
     /**
      * @param User $user
