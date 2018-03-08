@@ -48,13 +48,13 @@ class AuthSessionHelper
         return $role === self::getRole();
     }
     
-     /**	
--     * @return bool	
--     */	
--    public static function isGuest(): bool	
--    {	
--        return self::isRole(self::ROLE_GUEST);	
--    }
+/**
+     * @return bool
+     */
+    public static function isGuest(): bool
+    {
+        return self::isRole(self::ROLE_GUEST);
+    }
 
     /**
      * @return bool
