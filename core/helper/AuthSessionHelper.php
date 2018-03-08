@@ -55,14 +55,7 @@ class AuthSessionHelper
     {
         return self::isRole(self::ROLE_USER);
     }
-
-    /**
-     * @return bool
-     */
-    public static function isGuest(): bool
-    {
-        return self::isRole(self::ROLE_GUEST);
-    }
+    
     /**
      * @return bool
      */
