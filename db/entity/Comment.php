@@ -136,7 +136,4 @@ class Comment implements Entity
     {
         $this->status = $status;
     }
-
-
-
 }

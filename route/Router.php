@@ -15,7 +15,7 @@ class Router
      * @param Route $route
      * @return ResponseInterface
      */
-    public function callAction(Route $route)
+    public function callAction(Route $route): ResponseInterface
     {
         try {
             /** @var string $controllerName */
@@ -42,7 +42,7 @@ class Router
             throw new FileNotFoundException();
         } catch (FileNotFoundException $e) {
             $response = new NotFoundResponse();
-            $response->setContent('Page not found "' . $e->getMessage().'"');
+            $response->setContent('Page not found "' . $e->getMessage() . '"');
             return $response;
         }
     }

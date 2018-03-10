@@ -82,6 +82,9 @@ class CreateNewPostForm extends BaseModel
         return $this->postRepository->createNewPost($this->title, $this->categoryId, $this->content);
     }
 
+    /**
+     * @return int
+     */
     public function getNewPostId(): int
     {
         return $this->postRepository->getLastPostId();

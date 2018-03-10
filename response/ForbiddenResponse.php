@@ -21,9 +21,9 @@ class ForbiddenResponse implements ResponseInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getContent(): string
+    public function getContent(): ?string
     {
         return $this->content;
     }
@@ -47,7 +47,7 @@ class ForbiddenResponse implements ResponseInterface
     /**
      * @param string $header
      */
-    public function addHeader(string $header)
+    public function addHeader(string $header): void
     {
         $this->headers[] = $header;
     }

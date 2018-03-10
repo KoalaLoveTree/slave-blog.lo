@@ -21,7 +21,7 @@ class RepositoryStorage
      */
     public static function getCategoryRepository(): CategoryRepositoryInterface
     {
-        if (self::$categoryRepository===null){
+        if (self::$categoryRepository === null) {
             self::$categoryRepository = new CategoryRepository();
         }
         return self::$categoryRepository;
@@ -32,7 +32,7 @@ class RepositoryStorage
      */
     public static function getPostRepository(): PostRepositoryInterface
     {
-        if (self::$postRepository===null){
+        if (self::$postRepository === null) {
             self::$postRepository = new PostRepository();
         }
         return self::$postRepository;
@@ -43,7 +43,7 @@ class RepositoryStorage
      */
     public static function getCommentRepository(): CommentRepositoryInterface
     {
-        if (self::$commentRepository===null){
+        if (self::$commentRepository === null) {
             self::$commentRepository = new CommentRepository();
         }
         return self::$commentRepository;
@@ -54,12 +54,11 @@ class RepositoryStorage
      */
     public static function getUserRepository(): UserRepositoryInterface
     {
-        if (self::$userRepository===null){
+        if (self::$userRepository === null) {
             self::$userRepository = new UserRepository();
         }
         return self::$userRepository;
     }
-
 
 
 }

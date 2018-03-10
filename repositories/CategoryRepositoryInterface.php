@@ -3,18 +3,21 @@
 namespace repositories;
 
 
-use db\entity\Category;
+use core\DBPropertyNotFoundException;
+use db\entity\Entity;
 
 interface CategoryRepositoryInterface
 {
     /**
      * @param int $id
-     * @return Category
+     * @return Entity|null
+     * @throws DBPropertyNotFoundException
      */
-    public function getCategoryById(int $id): Category;
+    public function getCategoryById(int $id): ?Entity;
 
     /**
-     * @return array
+     * @return array|null
+     * @throws DBPropertyNotFoundException
      */
-    public function getAllCategories(): array;
+    public function getAllCategories(): ?array;
 }

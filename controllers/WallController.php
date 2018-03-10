@@ -2,13 +2,19 @@
 
 namespace controllers;
 
+use core\FileNotFoundException;
 use core\helper\AuthSessionHelper;
 use repositories\RepositoryStorage;
+use response\ResponseInterface;
 use response\SuccessResponse;
 
 class WallController extends Controller
 {
-    public function indexAction()
+    /**
+     * @return ResponseInterface
+     * @throws FileNotFoundException
+     */
+    public function indexAction(): ResponseInterface
     {
         $postRepository = RepositoryStorage::getPostRepository();
         $response = new SuccessResponse();

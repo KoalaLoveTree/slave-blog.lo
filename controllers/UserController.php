@@ -2,12 +2,17 @@
 
 namespace controllers;
 
+use core\FileNotFoundException;
 use core\helper\AuthSessionHelper;
 use core\helper\ErrorsCheckHelper;
 use models\User\AuthForm;
 use models\Post\CreateNewPostForm;
 use models\User\RegistrationForm;
+use ReflectionException;
+use repositories\CategoryRepositoryInterface;
+use repositories\PostRepositoryInterface;
 use repositories\RepositoryStorage;
+use repositories\UserRepositoryInterface;
 use response\ResponseInterface;
 use response\SuccessResponse;
 use response\UnauthorizedResponse;
@@ -16,10 +21,10 @@ class UserController extends Controller
 {
     /**
      * @return ResponseInterface
-     * @throws \ReflectionException
-     * @throws \core\FileNotFoundException
+     * @throws ReflectionException
+     * @throws FileNotFoundException
      */
-    public function signInAction()
+    public function signInAction(): ResponseInterface
     {
         $authForm = $this->createAuthForm();
 
@@ -32,19 +37,28 @@ class UserController extends Controller
         return $this->renderLogin();
     }
 
-    public function signUpAction()
+    /**
+     * @return ResponseInterface
+     * @throws ReflectionException
+     * @throws FileNotFoundException
+     */
+    public function signUpAction(): ResponseInterface
     {
         $registrationForm = $this->createRegistrationForm();
         if ($registrationForm->load()) {
             if ($registrationForm->isValid() && $registrationForm->createNewUser() && $registrationForm->login()) {
-               return $this->redirect('/');
+                return $this->redirect('/');
             }
             return $this->renderRegistration();
         }
         return $this->renderRegistration();
     }
 
-    public function profileAction()
+    /**
+     * @return ResponseInterface
+     * @throws FileNotFoundException
+     */
+    public function profileAction(): ResponseInterface
     {
         $userRepository = RepositoryStorage::getUserRepository();
         $postRepository = RepositoryStorage::getPostRepository();
@@ -60,7 +74,12 @@ class UserController extends Controller
         return new UnauthorizedResponse();
     }
 
-    public function createNewPostAction()
+    /**
+     * @return ResponseInterface
+     * @throws FileNotFoundException
+     * @throws ReflectionException
+     */
+    public function createNewPostAction(): ResponseInterface
     {
         $createNewPostForm = $this->createCreateNewPostForm();
         if ($createNewPostForm->load()) {
@@ -72,7 +91,10 @@ class UserController extends Controller
         return $this->renderCreateNewPost();
     }
 
-    public function exitAction()
+    /**
+     * @return ResponseInterface
+     */
+    public function exitAction(): ResponseInterface
     {
         AuthSessionHelper::logOut();
 
@@ -80,10 +102,10 @@ class UserController extends Controller
     }
 
     /**
-     * @return SuccessResponse
-     * @throws \core\FileNotFoundException
+     * @return ResponseInterface
+     * @throws FileNotFoundException
      */
-    protected function renderLogin()
+    protected function renderLogin(): ResponseInterface
     {
         $response = new SuccessResponse();
         $response->setContent($this->getView()->render('signIn'));
@@ -91,10 +113,10 @@ class UserController extends Controller
     }
 
     /**
-     * @return SuccessResponse
-     * @throws \core\FileNotFoundException
+     * @return ResponseInterface
+     * @throws FileNotFoundException
      */
-    protected function renderRegistration()
+    protected function renderRegistration(): ResponseInterface
     {
         $response = new SuccessResponse();
         $response->setContent($this->getView()->render('signUp'));
@@ -102,12 +124,12 @@ class UserController extends Controller
     }
 
     /**
-     * @return string
-     * @throws \core\FileNotFoundException
+     * @return ResponseInterface
+     * @throws FileNotFoundException
      */
-    protected function renderCreateNewPost()
+    protected function renderCreateNewPost(): ResponseInterface
     {
-        $categoryRepository = RepositoryStorage::getCategoryRepository();
+        $categoryRepository = $this->createCategoryRepository();
         $response = new SuccessResponse();
         $response->setContent($this->getView()->render('createNewPost', [
             'categories' => $categoryRepository->getAllCategories(),
@@ -118,27 +140,55 @@ class UserController extends Controller
     /**
      * @return AuthForm
      */
-    protected function createAuthForm()
+    protected function createAuthForm(): AuthForm
     {
         return new AuthForm(
-            RepositoryStorage::getUserRepository()
+            $this->createUserRepository()
         );
     }
 
     /**
      * @return RegistrationForm
      */
-    protected function createRegistrationForm()
+    protected function createRegistrationForm(): RegistrationForm
     {
         return new RegistrationForm(
-            RepositoryStorage::getUserRepository()
+            $this->createUserRepository()
         );
     }
 
-    protected function createCreateNewPostForm()
+    /**
+     * @return CreateNewPostForm
+     */
+    protected function createCreateNewPostForm(): CreateNewPostForm
     {
         return new CreateNewPostForm(
-            RepositoryStorage::getPostRepository()
+            $this->createPostRepository()
         );
     }
+
+    /**
+     * @return UserRepositoryInterface
+     */
+    protected function createUserRepository(): UserRepositoryInterface
+    {
+        return RepositoryStorage::getUserRepository();
+    }
+
+    /**
+     * @return PostRepositoryInterface
+     */
+    protected function createPostRepository(): PostRepositoryInterface
+    {
+        return RepositoryStorage::getPostRepository();
+    }
+
+    /**
+     * @return CategoryRepositoryInterface
+     */
+    protected function createCategoryRepository(): CategoryRepositoryInterface
+    {
+        return RepositoryStorage::getCategoryRepository();
+    }
+
 }

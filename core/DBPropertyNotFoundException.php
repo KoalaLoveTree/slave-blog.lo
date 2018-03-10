@@ -3,7 +3,9 @@
 namespace core;
 
 
-class DBPropertyNotFoundException extends \Exception
+use Exception;
+
+class DBPropertyNotFoundException extends Exception
 {
 
 }

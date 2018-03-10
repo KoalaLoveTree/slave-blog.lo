@@ -3,21 +3,24 @@
 namespace repositories;
 
 
-use db\entity\User;
+use core\DBPropertyNotFoundException;
+use db\entity\Entity;
 
 interface UserRepositoryInterface
 {
     /**
      * @param int $userId
-     * @return \db\entity\Entity|User
+     * @return Entity|null
+     * @throws DBPropertyNotFoundException
      */
-    public function findUserById(int $userId): User;
+    public function findUserById(int $userId): ?Entity;
 
     /**
      * @param string $email
-     * @return \db\entity\Entity|User
+     * @return Entity|null
+     * @throws DBPropertyNotFoundException
      */
-    public function findUserByEmail(string $email);
+    public function findUserByEmail(string $email): ?Entity;
 
     /**
      * @param string $login
@@ -29,6 +32,7 @@ interface UserRepositoryInterface
 
     /**
      * @return array|null
+     * @throws DBPropertyNotFoundException
      */
     public function getAllUsers(): ?array;
 }

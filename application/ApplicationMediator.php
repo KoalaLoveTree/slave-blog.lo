@@ -2,7 +2,6 @@
 
 namespace application;
 
-use core\helper\ErrorsCheckHelper;
 use response\ResponseInterface;
 use route\Router;
 use route\StandardParser;
@@ -10,7 +9,10 @@ use route\StandardParser;
 class ApplicationMediator implements MediatorInterface
 {
 
-    public function run(string $url)
+    /**
+     * @param string $url
+     */
+    public function run(string $url): void
     {
         $response = $this->makeRequest($url);
         $this->sendResponse($response);
@@ -19,7 +21,7 @@ class ApplicationMediator implements MediatorInterface
     /**
      * @param ResponseInterface $response
      */
-    public function sendResponse(ResponseInterface $response)
+    public function sendResponse(ResponseInterface $response): void
     {
         http_response_code($response->getStatusCode());
         if (!empty($response->getHeaders())) {

@@ -14,15 +14,15 @@ interface ResponseInterface
     /**
      * @param string $header
      */
-    public function addHeader(string $header);
+    public function addHeader(string $header): void;
 
     /**
      * @param string $content
      */
-    public function setContent(string $content);
+    public function setContent(string $content): void;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getContent(): ?string;
 

@@ -3,20 +3,20 @@
 namespace repositories;
 
 
+use core\DBPropertyNotFoundException;
 use core\helper\AuthSessionHelper;
 use db\entity\Entity;
 use db\entity\Post;
 
 class PostRepository extends BaseDbRepository implements PostRepositoryInterface
 {
-    const TABLE_NAME_POST = 'post';
-
     /**
-     * @return array
+     * @return array|null
+     * @throws DBPropertyNotFoundException
      */
-    public function getPostsForHomePage(): array
+    public function getPostsForHomePage(): ?array
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . self::TABLE_NAME_POST . ' ORDER BY id DESC LIMIT 3');
+        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . Post::TABLE_NAME . ' ORDER BY id DESC LIMIT 3');
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $this->populateEntity($result);
@@ -24,12 +24,12 @@ class PostRepository extends BaseDbRepository implements PostRepositoryInterface
 
     /**
      * @param int $id
-     * @return \db\entity\Entity|Post
-     * @throws \core\DBPropertyNotFoundException
+     * @return Entity|null
+     * @throws DBPropertyNotFoundException
      */
-    public function getPostById(int $id): Post
+    public function getPostById(int $id): ?Entity
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . self::TABLE_NAME_POST . ' WHERE id = ?');
+        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . Post::TABLE_NAME . ' WHERE id = ?');
         $stmt->execute(array($id));
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $post = new Post();
@@ -38,11 +38,12 @@ class PostRepository extends BaseDbRepository implements PostRepositoryInterface
 
     /**
      * @param int $categoryId
-     * @return array
+     * @return array|null
+     * @throws DBPropertyNotFoundException
      */
-    public function getPostByCategory(int $categoryId): array
+    public function getPostByCategory(int $categoryId): ?array
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . self::TABLE_NAME_POST . ' WHERE categoryId = ?');
+        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . Post::TABLE_NAME . ' WHERE categoryId = ?');
         $stmt->execute(array($categoryId));
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $this->populateEntity($result);
@@ -50,11 +51,12 @@ class PostRepository extends BaseDbRepository implements PostRepositoryInterface
 
     /**
      * @param int $authorId
-     * @return array
+     * @return array|null
+     * @throws DBPropertyNotFoundException
      */
     public function getPostsByAuthorId(int $authorId): ?array
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . self::TABLE_NAME_POST . ' WHERE authorId = ?');
+        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . Post::TABLE_NAME . ' WHERE authorId = ?');
         $stmt->execute(array($authorId));
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $this->populateEntity($result);
@@ -64,12 +66,12 @@ class PostRepository extends BaseDbRepository implements PostRepositoryInterface
      * @param string $title
      * @param int $categoryId
      * @param string $content
-     * @return bool|mixed
+     * @return bool
      */
-    public function createNewPost(string $title, int $categoryId, string $content)
+    public function createNewPost(string $title, int $categoryId, string $content): bool
     {
         $stmt = $this->dbConnection->prepare(
-            'INSERT INTO ' . self::TABLE_NAME_POST . ' (authorId, categoryId, title, content) VALUES (:authorId, :categoryId, :title, :content)');
+            'INSERT INTO ' . Post::TABLE_NAME . ' (authorId, categoryId, title, content) VALUES (:authorId, :categoryId, :title, :content)');
         $stmt->bindParam(':authorId', AuthSessionHelper::getId());
         $stmt->bindParam(':categoryId', $categoryId);
         $stmt->bindParam(':title', $title);
@@ -79,11 +81,11 @@ class PostRepository extends BaseDbRepository implements PostRepositoryInterface
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getLastPostId(): int
+    public function getLastPostId(): ?int
     {
-        $stmt = $this->dbConnection->prepare('SELECT id FROM ' . self::TABLE_NAME_POST . ' ORDER BY id DESC LIMIT 1');
+        $stmt = $this->dbConnection->prepare('SELECT id FROM ' . Post::TABLE_NAME . ' ORDER BY id DESC LIMIT 1');
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $result[0]['id'];
@@ -91,25 +93,19 @@ class PostRepository extends BaseDbRepository implements PostRepositoryInterface
 
     /**
      * @return array
+     * @throws DBPropertyNotFoundException
      */
     public function getAllPosts(): ?array
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . self::TABLE_NAME_POST);
+        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . Post::TABLE_NAME);
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $this->populateEntity($result);
     }
 
     /**
-     * @param int $id
-     * @return bool
+     * @return string
      */
-    public function deletePost(int $id): bool
-    {
-        $stmt = $this->dbConnection->prepare('UPDATE ' . self::TABLE_NAME_POST . ' SET status = ' . Post::STATUS_DELETED . ' WHERE id = ?');
-        return $stmt->execute(array($id));
-    }
-
     public function getEntityClassName(): string
     {
         return Post::class;

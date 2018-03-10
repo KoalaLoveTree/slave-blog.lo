@@ -2,20 +2,21 @@
 
 namespace repositories;
 
+use core\DBPropertyNotFoundException;
+use db\entity\Entity;
 use db\entity\User;
 
 class UserRepository extends BaseDbRepository implements UserRepositoryInterface
 {
-    const TABLE_NAME_USER = 'user';
 
     /**
      * @param int $userId
-     * @return \db\entity\Entity|User
-     * @throws \core\DBPropertyNotFoundException
+     * @return Entity|null
+     * @throws DBPropertyNotFoundException
      */
-    public function findUserById(int $userId): User
+    public function findUserById(int $userId): ?Entity
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . self::TABLE_NAME_USER . ' WHERE id = ?');
+        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . User::TABLE_NAME . ' WHERE id = ?');
         $stmt->execute(array($userId));
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $user = new User();
@@ -24,12 +25,12 @@ class UserRepository extends BaseDbRepository implements UserRepositoryInterface
 
     /**
      * @param string $email
-     * @return \db\entity\Entity|User
-     * @throws \core\DBPropertyNotFoundException
+     * @return Entity|null
+     * @throws DBPropertyNotFoundException
      */
-    public function findUserByEmail(string $email)
+    public function findUserByEmail(string $email): ?Entity
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . self::TABLE_NAME_USER . ' WHERE email = ?');
+        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . User::TABLE_NAME . ' WHERE email = ?');
         $stmt->execute(array($email));
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $user = new User();
@@ -53,7 +54,7 @@ class UserRepository extends BaseDbRepository implements UserRepositoryInterface
     public function createNewUser($login, $email, $password): bool
     {
         $stmt = $this->dbConnection->prepare(
-            'INSERT INTO ' . self::TABLE_NAME_USER . ' (login, password, email) VALUES (:login, :password, :email)');
+            'INSERT INTO ' . User::TABLE_NAME . ' (login, password, email) VALUES (:login, :password, :email)');
         $stmt->bindParam(':login', $login);
         $stmt->bindParam(':password', password_hash($password, PASSWORD_DEFAULT));
         $stmt->bindParam(':email', $email);
@@ -63,10 +64,11 @@ class UserRepository extends BaseDbRepository implements UserRepositoryInterface
 
     /**
      * @return array|null
+     * @throws DBPropertyNotFoundException
      */
     public function getAllUsers(): ?array
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . self::TABLE_NAME_USER);
+        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . User::TABLE_NAME);
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $this->populateEntity($result);
@@ -74,15 +76,8 @@ class UserRepository extends BaseDbRepository implements UserRepositoryInterface
     }
 
     /**
-     * @param int $id
-     * @return bool
+     * @return string
      */
-    public function deleteUser(int $id): bool
-    {
-        $stmt = $this->dbConnection->prepare('UPDATE ' . self::TABLE_NAME_USER . ' SET status = ' . User::STATUS_DELETED . ' WHERE id = ?');
-        return $stmt->execute(array($id));
-    }
-
     public function getEntityClassName(): string
     {
         return User::class;

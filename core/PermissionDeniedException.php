@@ -3,7 +3,9 @@
 namespace core;
 
 
-class PermissionDeniedException extends \Exception
+use Exception;
+
+class PermissionDeniedException extends Exception
 {
 
 }

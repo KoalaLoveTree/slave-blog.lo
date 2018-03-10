@@ -11,12 +11,12 @@ interface MediatorInterface
     /**
      * @param string $url
      */
-    public function run(string $url);
+    public function run(string $url): void;
 
     /**
      * @param ResponseInterface $response
      */
-    public function sendResponse(ResponseInterface $response);
+    public function sendResponse(ResponseInterface $response): void;
 
     /**
      * @param string $request
