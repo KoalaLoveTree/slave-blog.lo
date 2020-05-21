@@ -15,7 +15,7 @@ class Router
      * @param Route $route
      * @return ResponseInterface
      */
-    public function callAction(Route $route)
+    public function callAction(Route $route): ResponseInterface
     {
         try {
             /** @var string $controllerName */
@@ -42,7 +42,7 @@ class Router
             throw new FileNotFoundException();
         } catch (FileNotFoundException $e) {
             $response = new NotFoundResponse();
-            $response->setContent('Page not found "' . $e->getMessage().'"');
+            $response->setContent('Page not found "' . $e->getMessage() . '"');
             return $response;
         }
     }
@@ -55,7 +55,7 @@ class Router
     protected function getControllerName($path, $controller): string
     {
         if ($this->isControllerHavePath($path)) {
-            return $path . DIRECTORY_SEPARATOR .
+            return $path . '\\' .
                 ucfirst($controller) . 'Controller';
         } else {
             return ucfirst($controller) . 'Controller';

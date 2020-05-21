@@ -15,7 +15,7 @@ class RedirectResponse implements ResponseInterface
     /**
      * @param string $header
      */
-    public function addHeader(string $header)
+    public function addHeader(string $header): void
     {
         $this->headers[] = $header;
     }
@@ -23,7 +23,7 @@ class RedirectResponse implements ResponseInterface
     /**
      * @param string $content
      */
-    public function setContent(string $content)
+    public function setContent(string $content): void
     {
         $this->content = $content;
     }

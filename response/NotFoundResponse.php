@@ -10,6 +10,7 @@ class NotFoundResponse implements ResponseInterface
     protected $content;
     /** @var array */
     protected $headers;
+
     /**
      * @return array|null
      */
@@ -45,7 +46,7 @@ class NotFoundResponse implements ResponseInterface
     /**
      * @param string $header
      */
-    public function addHeader(string $header)
+    public function addHeader(string $header): void
     {
         $this->headers[] = $header;
     }

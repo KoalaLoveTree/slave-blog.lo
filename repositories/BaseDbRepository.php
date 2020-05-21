@@ -12,13 +12,24 @@ abstract class BaseDbRepository
     /** @var \PDO */
     protected $dbConnection;
 
+    /**
+     * BaseDbRepository constructor.
+     */
     public function __construct()
     {
         $this->dbConnection = App::getDbm()->getDB();
     }
 
+    /**
+     * @return string
+     */
     abstract public function getEntityClassName(): string;
 
+    /**
+     * @param array $data
+     * @return array
+     * @throws DBPropertyNotFoundException
+     */
     protected function populateEntity(array $data): array
     {
         $result = [];
@@ -36,7 +47,7 @@ abstract class BaseDbRepository
      * @return Entity
      * @throws DBPropertyNotFoundException
      */
-    protected function arrayToEntity(array $data, Entity $entity)
+    protected function arrayToEntity(array $data, Entity $entity): Entity
     {
 
         foreach ($data as $key => $value) {

@@ -3,20 +3,20 @@
 namespace repositories;
 
 
+use core\DBPropertyNotFoundException;
 use db\entity\Category;
+use db\entity\Entity;
 
 class CategoryRepository extends BaseDbRepository implements CategoryRepositoryInterface
 {
-    const TABLE_NAME_CATEGORY = 'category';
-
     /**
      * @param int $id
-     * @return Category|\db\entity\Entity
-     * @throws \core\DBPropertyNotFoundException
+     * @return Entity|null
+     * @throws DBPropertyNotFoundException
      */
-    public function getCategoryById(int $id): Category
+    public function getCategoryById(int $id): ?Entity
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM '.self::TABLE_NAME_CATEGORY.' WHERE id = ?');
+        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . Category::TABLE_NAME . ' WHERE id = ?');
         $stmt->execute(array($id));
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $category = new Category();
@@ -24,16 +24,20 @@ class CategoryRepository extends BaseDbRepository implements CategoryRepositoryI
     }
 
     /**
-     * @return array
+     * @return array|null
+     * @throws DBPropertyNotFoundException
      */
-    public function getAllCategories(): array
+    public function getAllCategories(): ?array
     {
-        $stmt = $this->dbConnection->prepare('SELECT * FROM '.self::TABLE_NAME_CATEGORY);
+        $stmt = $this->dbConnection->prepare('SELECT * FROM ' . Category::TABLE_NAME);
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $this->populateEntity($result);
     }
 
+    /**
+     * @return string
+     */
     public function getEntityClassName(): string
     {
         return Category::class;

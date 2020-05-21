@@ -3,8 +3,8 @@
 namespace core;
 
 
-use Throwable;
+use Exception;
 
-class FileNotFoundException extends \Exception
+class FileNotFoundException extends Exception
 {
 }

@@ -7,11 +7,18 @@ use core\helper\ErrorsCheckHelper;
 use models\comment\AddCommentForm;
 use models\comment\ApproveCommentForm;
 use models\comment\DeleteCommentForm;
+use ReflectionException;
+use repositories\CommentRepositoryInterface;
 use repositories\RepositoryStorage;
+use response\ResponseInterface;
 
 class CommentController extends Controller
 {
-    public function addCommentAction()
+    /**
+     * @return ResponseInterface
+     * @throws ReflectionException
+     */
+    public function addCommentAction(): ResponseInterface
     {
         $commentForm = $this->createAddCommentForm();
         if ($commentForm->load()) {
@@ -22,7 +29,11 @@ class CommentController extends Controller
         ErrorsCheckHelper::setError('Comment must be not empty!');
     }
 
-    public function deleteCommentAction()
+    /**
+     * @return ResponseInterface
+     * @throws ReflectionException
+     */
+    public function deleteCommentAction(): ResponseInterface
     {
         $commentDeleteForm = $this->createDeleteCommentForm();
         if ($commentDeleteForm->load()) {
@@ -33,35 +44,56 @@ class CommentController extends Controller
         }
     }
 
-    public function approveCommentAction()
+    /**
+     * @return ResponseInterface
+     * @throws ReflectionException
+     */
+    public function approveCommentAction(): ResponseInterface
     {
-     $approveCommentForm = $this->createApproveCommentForm();
-     if ($approveCommentForm->load()){
-         if ($approveCommentForm->isValid() && $approveCommentForm->approveComment()) {
-             return $this->redirect('/admin/adminPanel');
-         }
-     }
+        $approveCommentForm = $this->createApproveCommentForm();
+        if ($approveCommentForm->load()) {
+            if ($approveCommentForm->isValid() && $approveCommentForm->approveComment()) {
+                return $this->redirect('/admin/adminPanel');
+            }
+        }
     }
 
 
-    protected function createAddCommentForm()
+    /**
+     * @return AddCommentForm
+     */
+    protected function createAddCommentForm(): AddCommentForm
     {
         return new AddCommentForm(
-            RepositoryStorage::getCommentRepository()
+            $this->createCommentRepository()
         );
     }
 
-    protected function createDeleteCommentForm()
+    /**
+     * @return DeleteCommentForm
+     */
+    protected function createDeleteCommentForm(): DeleteCommentForm
     {
         return new DeleteCommentForm(
-            RepositoryStorage::getCommentRepository()
+            $this->createCommentRepository()
         );
     }
 
-    protected function createApproveCommentForm()
+    /**
+     * @return ApproveCommentForm
+     */
+    protected function createApproveCommentForm(): ApproveCommentForm
     {
         return new ApproveCommentForm(
-            RepositoryStorage::getCommentRepository()
+            $this->createCommentRepository()
         );
+    }
+
+    /**
+     * @return CommentRepositoryInterface
+     */
+    protected function createCommentRepository(): CommentRepositoryInterface
+    {
+        return RepositoryStorage::getCommentRepository();
     }
 }

@@ -14,9 +14,9 @@ class RequestHelper
      * @param string $key
      * @param mixed $default
      *
-     * @return mixed|null
+     * @return string|null
      */
-    public static function getPost(string $key, $default = null)
+    public static function getPost(string $key, $default = null): ?string
     {
         return static::getValue($_POST, $key, $default);
     }
@@ -27,9 +27,9 @@ class RequestHelper
      * @param null $default
      *
      *
-     * @return mixed|null
+     * @return string|null
      */
-    public static function getQueryString(string $key, $default = null)
+    public static function getQueryString(string $key, $default = null): ?string
     {
         return static::getValue($_GET, $key, $default);
     }
@@ -39,9 +39,9 @@ class RequestHelper
      * @param string $key
      * @param mixed $default
      *
-     * @return mixed|null
+     * @return string|null
      */
-    public static function getValue(array $data, string $key, $default = null)
+    public static function getValue(array $data, string $key, $default = null): ?string
     {
         return $data[$key] ?? $default;
     }

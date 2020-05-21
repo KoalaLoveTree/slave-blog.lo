@@ -11,6 +11,7 @@ class UnauthorizedResponse implements ResponseInterface
     protected $content;
     /** @var array */
     protected $headers;
+
     /**
      * @return array|null
      */
@@ -18,6 +19,7 @@ class UnauthorizedResponse implements ResponseInterface
     {
         return $this->headers;
     }
+
     /**
      * @return null|string
      */
@@ -45,7 +47,7 @@ class UnauthorizedResponse implements ResponseInterface
     /**
      * @param string $header
      */
-    public function addHeader(string $header)
+    public function addHeader(string $header): void
     {
         $this->headers[] = $header;
     }

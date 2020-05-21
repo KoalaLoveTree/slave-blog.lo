@@ -101,6 +101,4 @@ class User implements Entity
     {
         $this->role = $role;
     }
-
-
 }

@@ -11,6 +11,7 @@ class SuccessResponse implements ResponseInterface
     protected $content;
     /** @var array */
     protected $headers;
+
     /**
      * @return array|null
      */
@@ -46,7 +47,7 @@ class SuccessResponse implements ResponseInterface
     /**
      * @param string $header
      */
-    public function addHeader(string $header)
+    public function addHeader(string $header): void
     {
         $this->headers[] = $header;
     }

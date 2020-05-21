@@ -8,7 +8,10 @@ class ErrorsCheckHelper
 {
     const ERRORS = 'errors';
 
-    public static function setError(string $error)
+    /**
+     * @param string $error
+     */
+    public static function setError(string $error): void
     {
         self::writeErrorToSession($error);
     }
@@ -28,7 +31,7 @@ class ErrorsCheckHelper
      */
     public static function isErrorsExist(): bool
     {
-        if (!empty(self::getErrorFromSession())){
+        if (!empty(self::getErrorFromSession())) {
             return true;
         }
         return false;
@@ -37,22 +40,22 @@ class ErrorsCheckHelper
     /**
      * @param $value
      */
-    protected static function writeErrorToSession($value)
+    protected static function writeErrorToSession($value): void
     {
         $_SESSION[self::ERRORS][] = $value;
     }
 
-    protected static function deleteErrors()
+    protected static function deleteErrors(): void
     {
-        if (!empty(self::getErrorFromSession())){
+        if (!empty(self::getErrorFromSession())) {
             unset($_SESSION[self::ERRORS]);
         }
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    protected static function getErrorFromSession()
+    protected static function getErrorFromSession(): string
     {
         return $_SESSION[self::ERRORS];
     }

@@ -48,6 +48,9 @@ class DeleteCommentForm extends BaseModel
         return $this->choosePath();
     }
 
+    /**
+     * @return string
+     */
     protected function choosePath():string
     {
         switch ($this->path){
@@ -68,6 +71,9 @@ class DeleteCommentForm extends BaseModel
         return $this->commentRepository->findCommentById($this->id);
     }
 
+    /**
+     * @return bool
+     */
     public function deleteComment():bool
     {
         return $this->commentRepository->deleteComment($this->id);
